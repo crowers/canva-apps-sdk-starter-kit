@@ -26,53 +26,13 @@ yargs(hideBin(process.argv))
       process.env.npm_config_use_https?.toLocaleLowerCase().trim() === "true",
   })
   .command(
-    "$0 [example]",
-    "Starts a local development for the app in /src, or an example app if specified",
+    "$0",
+    "Starts a local development for the app in /src",
     (yargs) => {
-      return yargs.positional("example", {
-        describe: "The example app to run",
-        type: "string",
-        choices: Context.examples,
-      });
+      return yargs
     },
     (args) => {
       const ctx = new Context(process.env, args);
-      appRunner.run(ctx);
-    },
-  )
-  .command(
-    "examples",
-    "Displays a list of available examples to choose from",
-    () => {},
-    async (args) => {
-      const { example } = await prompts(
-        {
-          type: "autocomplete",
-          name: "example",
-          message: "Which example would you like to run?",
-          choices: Context.examples.map((example) => ({
-            title: example.replace(/_/g, " "),
-            value: example,
-          })),
-          suggest: async (input, choices) =>
-            choices.filter((choice) =>
-              choice.title.toLowerCase().includes(input.toLowerCase()),
-            ),
-        },
-        {
-          onCancel: () => {
-            console.log(errorChalk("Aborted by the user."));
-            process.exit(0);
-          },
-        },
-      );
-
-      if (example == null) {
-        console.log(`${errorChalk("Error:")} No such example exists 😢`);
-        process.exit(1);
-      }
-
-      const ctx = new Context(process.env, { ...args, example });
       appRunner.run(ctx);
     },
   )

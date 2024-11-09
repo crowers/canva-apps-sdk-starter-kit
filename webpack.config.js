@@ -198,6 +198,7 @@ function buildDevConfig(options) {
         }
       : "http",
     host: "localhost",
+    hot: enableHmr,    
     historyApiFallback: {
       rewrites: [{ from: /^\/$/, to: "/app.js" }],
     },

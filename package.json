@@ -12,8 +12,8 @@
     "lint:types": "tsc",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier '{examples,src,utils,scripts}/**/*.{css,ts,tsx,json,js}' --no-config --write",
-    "format:check": "prettier '{examples,src,utils,scripts}/**/*.{css,ts,tsx,json,js}' --no-config --check --ignore-path",
+    "format": "prettier '{src,utils,scripts}/**/*.{css,ts,tsx,json,js}' --no-config --write",
+    "format:check": "prettier '{src,utils,scripts}/**/*.{css,ts,tsx,json,js}' --no-config --check --ignore-path",
     "format:file": "prettier $1 --no-config --write",
     "test": "jest --no-cache",
     "test:watch": "jest --no-cache --watch"

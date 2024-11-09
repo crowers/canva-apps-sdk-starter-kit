@@ -5,7 +5,7 @@
     "app.option.weddingInvite": "Wedding Invite",
     "app.option.greetingCard": "Greeting Card",
     "app.label.shape": "Shape",
-    "app.option.round": "Round",
+    "app.option.circle": "Circle",
     "app.option.balloon": "Balloon",
     "app.option.ring": "Ring",
     "app.option.heart": "Heart",
@@ -16,8 +16,10 @@
     "app.option.pink": "Pink",
     "app.option.library": "Library",
     "app.option.custom": "Custom",
+    "app.label.backgroundColor": "Background Color",
+    "app.label.foregroundColor": "Foreground Color",
     "app.label.uploadCustomImage": "Upload Custom Image",
     "app.label.backgroundImages": "Background Images",
     "app.image.alt": "Background",
-    "app.button.createQRCode": "Create QR Code"
+    "app.button.createQRCode": "Add to Page"
   }

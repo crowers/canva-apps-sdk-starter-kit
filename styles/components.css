@@ -36,3 +36,75 @@
 .scrollContainer:focus-within::-webkit-scrollbar-thumb {
   visibility: visible;
 }
+
+.custom-font-dropdown {
+  position: relative !important;
+  width: 200px !important;
+}
+
+.selected-font {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 8px !important;
+  background-color: #f0f0f0 !important;
+  border: 1px solid #ccc !important;
+  cursor: pointer !important;
+  border-radius: 4px !important;
+}
+
+.selected-font img {
+  width: 40px !important;
+  height: auto !important;
+  margin-right: 8px !important;
+}
+
+.selected-font span {
+  flex-grow: 1 !important;
+}
+
+.font-options {
+  display: none !important; /* Hidden by default, shown on hover */
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  width: 100% !important;
+  background-color: #fff !important;
+  border: 1px solid #ccc !important;
+  border-radius: 4px !important;
+  max-height: 200pxv;
+  overflow-y: auto !important;
+  z-index: 100 !important;
+}
+
+.custom-font-dropdown:hover .font-options {
+  display: block !important;
+}
+
+.font-option {
+  display: flex !important;
+  align-items: center !important;
+  padding: 8px !important;
+  width: 100% !important;
+  background-color: #fff !important;
+  border: none !important;
+  text-align: left !important;
+  cursor: pointer !important;
+  transition: background-color 0.2s !important;
+}
+
+.font-option img {
+  width: 40px !important;
+  height: auto !important;
+  margin-right: 8px !important;
+}
+
+.font-option span {
+  font-size: 14px !important;
+  color: #333 !important;
+}
+
+.font-option:hover {
+  background-color: #f0f0f0 !important;
+}
+
