@@ -16,10 +16,15 @@
     "app.option.pink": "Pink",
     "app.option.library": "Library",
     "app.option.custom": "Custom",
-    "app.label.backgroundColor": "Background Color",
-    "app.label.foregroundColor": "Foreground Color",
+    "app.label.refreshPreview": "Refresh Preview",
+    "app.label.qrCode": "QR Code",
+    "app.label.fontSize": "Font Size",
+    "app.label.font": "Font",
+    "app.label.backgroundColor": "Background",
+    "app.label.foregroundColor": "Foreground",
     "app.label.uploadCustomImage": "Upload Custom Image",
-    "app.label.backgroundImages": "Background Images",
+    "app.label.backgroundImage": "Background Image",
     "app.image.alt": "Background",
+    "app.button.resetColors": "Reset to default",
     "app.button.createQRCode": "Add to Page"
   }

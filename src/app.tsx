@@ -20,6 +20,7 @@ import {
   ArrowRightIcon,
   FontIcon,
   SlidersIcon,
+  UndoIcon,
   Text,
   TextInput,
 } from "@canva/app-ui-kit";
@@ -32,8 +33,8 @@ export const App = () => {
   const intl = useIntl();
   const [inviteType, setInviteType] = useState<string>("party_invite");
   const [shape, setShape] = useState<string>("circle");
-  const [backgroundColor, setBackgroundColor] = useState<string>("#FF6935");
-  const [foregroundColor, setForegroundColor] = useState<string>("#FFFFFF");
+  const [backgroundColor, setBackgroundColor] = useState<string>("#ff6935");
+  const [foregroundColor, setForegroundColor] = useState<string>("#ffffff");
   const [customImage, setCustomImage] = useState<File | null>(null);
   const [backgroundImages, setBackgroundImages] = useState<any[]>([]);
   const [fonts, setFonts] = useState<any[]>([]);
@@ -42,6 +43,8 @@ export const App = () => {
   const [previewImageSrc, setPreviewImageSrc] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const abortControllerRef = useRef<AbortController | null>(null);
+  const [previewOutOfDate = true, setPreviewOutOfDate] =
+    useState<boolean>(false);
 
   const [triggerReferenceElement] = useState<HTMLDivElement | null>(null);
   const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
@@ -102,6 +105,11 @@ export const App = () => {
   const createQRButtonLabel = intl.formatMessage({
     id: "app.button.createQRCode",
     defaultMessage: "Add to Page",
+  });
+
+  const resetColorsButtonLabel = intl.formatMessage({
+    id: "app.button.resetColors",
+    defaultMessage: "Reset Colors",
   });
 
   useEffect(() => {
@@ -193,10 +201,12 @@ export const App = () => {
 
   const handleBackgroundColorChange = (value: string) => {
     setBackgroundColor(value);
+    setPreviewOutOfDate(true);
   };
 
   const handleForegroundColorChange = (value: string) => {
     setForegroundColor(value);
+    setPreviewOutOfDate(true);
   };
 
   const blobToImageURL = (blob: Blob) => {
@@ -275,6 +285,8 @@ export const App = () => {
     const controller = new AbortController();
     abortControllerRef.current = controller;
 
+    setLoading(true);
+
     const requestData = {
       source: "magikqr_app",
       platform: "canva",
@@ -297,7 +309,6 @@ export const App = () => {
       format: "png",
     };
 
-    setLoading(true);
     try {
       const response = await fetch(
         "https://europe-west2-kaards-qr-code.cloudfunctions.net/qrCodeService",
@@ -318,6 +329,7 @@ export const App = () => {
           return URL.createObjectURL(blob);
         };
         setPreviewImageSrc(blobToImageURL(blob));
+        setPreviewOutOfDate(false);
       }
     } catch {
       // Handle error
@@ -340,6 +352,25 @@ export const App = () => {
     });
   }
 
+  const showResetQRCodeColors = () => {
+    const selectedBackground = backgroundImages.find(
+      (bg) => bg.id === selectedBackgroundId
+    );
+    return (
+      backgroundColor !== (selectedBackground?.bg_color ?? "#ffffff") ||
+      foregroundColor !== (selectedBackground?.fg_color ?? "#000000")
+    );
+  };
+
+  const resetQRCodeColors = () => {
+    const selectedBackground = backgroundImages.find(
+      (bg) => bg.id === selectedBackgroundId
+    );
+    setBackgroundColor(selectedBackground?.bg_color ?? "#ffffff");
+    setForegroundColor(selectedBackground?.fg_color ?? "#000000");
+    setPreviewOutOfDate(true);
+  };
+
   const handleBackgroundSelect = (image: any) => {
     setBackgroundImageId(image.id);
     setBackgroundColor(image.bg_color);
@@ -359,6 +390,25 @@ export const App = () => {
         <Grid alignX="stretch" alignY="stretch" columns={1} spacing="1u">
           {loading ? (
             <LoadingIndicator size="medium" />
+          ) : previewOutOfDate ? (
+            <Box paddingEnd="2u">
+              <FormattedMessage
+                id="app.label.refreshPreview"
+                defaultMessage="Refresh Preview"
+              >
+                {(localizedButton) => (
+                  <Button
+                    variant="contrast"
+                    icon={() => {}}
+                    onClick={updatePreviewQRCode}
+                    size="large"
+                    stretch
+                  >
+                    {localizedButton}
+                  </Button>
+                )}
+              </FormattedMessage>
+            </Box>
           ) : (
             <ImageCard
               key="previewImage"
@@ -368,14 +418,49 @@ export const App = () => {
             />
           )}
 
+          {!loading && !previewOutOfDate ? (
+            <Box
+              paddingStart="1u"
+              paddingEnd="2u"
+              paddingTop="0.5u"
+            >
+              <Columns spacing="1u">
+                <Column>
+                  <Button
+                    variant="primary"
+                    onClick={handleCreateQRCode}
+                    stretch
+                  >
+                    {createQRButtonLabel}
+                  </Button>
+                </Column>
+              </Columns>
+            </Box>
+          ) : null}          
+
           <Box paddingEnd="2u">
-            <HorizontalCard
-              ariaLabel={selectedBackgroundId}
-              description={"QR B/g Color: " + backgroundColor + "  F/g Color: " + foregroundColor}
-              onClick={onFilterClick}
-              title={"Background Image"}
-              thumbnail={{ url: backgroundImages.find((bg) => bg.id === selectedBackgroundId)?.thumbnail_url, alt: "Background" }}
-            />
+            <FormattedMessage
+              id="app.label.backgroundImage"
+              defaultMessage="Background Image"
+            >
+              {(localizedTitle) => (
+                <HorizontalCard
+                  ariaLabel={selectedBackgroundId}
+                  onClick={onFilterClick}
+                  title={
+                    <span style={{ fontSize: 14, fontWeight: "bold" }}>
+                      {localizedTitle}
+                    </span>
+                  }
+                  thumbnail={{
+                    url: backgroundImages.find(
+                      (bg) => bg.id === selectedBackgroundId
+                    )?.thumbnail_url,
+                    alt: localizedTitle,
+                  }}
+                />
+              )}
+            </FormattedMessage>
           </Box>
 
           <Flyout
@@ -416,46 +501,11 @@ export const App = () => {
           >
             <Box padding="2u">
               <Rows spacing="2u">
-                <Columns spacing="0.5u">
-                  <Column>
-                    <Text size="medium" variant="bold">
-                      <FormattedMessage
-                        id="app.label.backgroundColor"
-                        defaultMessage="Background Color"
-                      />
-                    </Text>
-                  </Column>
-                  <Column>
-                    <Text size="medium" variant="bold">
-                      <FormattedMessage
-                        id="app.label.foregroundColor"
-                        defaultMessage="Foreground Color"
-                      />
-                    </Text>
-                  </Column>
-                </Columns>
-                <Columns spacing="0.5u">
-                  <Column>
-                    <ColorSelector
-                      id="bgColorSelector"
-                      color={backgroundColor}
-                      onChange={handleBackgroundColorChange}
-                    />
-                  </Column>
-                  <Column>
-                    <ColorSelector
-                      id="fgColorSelector"
-                      color={foregroundColor}
-                      onChange={handleForegroundColorChange}
-                    />
-                  </Column>
-                </Columns>
-
                 <Rows spacing="2u">
                   <Text size="medium" variant="bold">
                     <FormattedMessage
-                      id="app.label.backgroundImages"
-                      defaultMessage="Background Images"
+                      id="app.label.backgroundImage"
+                      defaultMessage="Background Image"
                     />
                   </Text>
                   <FormField
@@ -549,6 +599,67 @@ export const App = () => {
             </Box>
           </Flyout>
 
+          <Box paddingBottom="3u">
+            <Rows spacing="0.5u">
+              <Text size="medium" variant="bold">
+                <FormattedMessage
+                  id="app.label.qrCode"
+                  defaultMessage="QR Code"
+                />
+              </Text>
+
+              <Columns spacing="0.5u">
+                <Column>
+                  <Text size="medium">
+                    <FormattedMessage
+                      id="app.label.backgroundColor"
+                      defaultMessage="Background"
+                    />
+                  </Text>
+                </Column>
+                <Column>
+                  <Text size="medium">
+                    <FormattedMessage
+                      id="app.label.foregroundColor"
+                      defaultMessage="Foreground"
+                    />
+                  </Text>
+                </Column>
+              </Columns>
+              <Columns spacing="0.5u">
+                <Column>
+                  <ColorSelector
+                    id="bgColorSelector"
+                    color={backgroundColor}
+                    onChange={handleBackgroundColorChange}
+                  />
+                </Column>
+                <Column>
+                  <ColorSelector
+                    id="fgColorSelector"
+                    color={foregroundColor}
+                    onChange={handleForegroundColorChange}
+                  />
+                </Column>
+              </Columns>
+            </Rows>
+            {showResetQRCodeColors() ? (
+              <Box paddingTop="1u">
+                <Button
+                  ariaLabel="ariaLabel"
+                  icon={UndoIcon}
+                  size="small"
+                  type="button"
+                  variant="tertiary"
+                  stretch={false}
+                  onClick={resetQRCodeColors}
+                >
+                  {resetColorsButtonLabel}
+                </Button>
+              </Box>
+            ) : null}
+          </Box>
+
           <Box paddingStart="0.5u" paddingEnd="2u">
             <Columns spacing="1u">
               <Column>
@@ -562,24 +673,58 @@ export const App = () => {
                   footer={<CharacterCountDecorator max={50} />}
                   onChange={(e) => {
                     setTopMessageText(e);
-                  }}
-                  onBlur={(e) => {
-                    updatePreviewQRCode();
+                    setPreviewOutOfDate(true);
                   }}
                   placeholder="Top Message"
                   value={topMessageText}
+                  maxRows={1}
                 />
                 <Box paddingEnd="0.5u">
                   <Columns spacing="0.5u">
                     <Column>
                       {topFont?.family ? (
-                        <HorizontalCard
-                          ariaLabel={topFont.family}
-                          description={"Font Size: " + topFontSize + "  Color: " + topFontColor}
-                          onClick={onTopFontFilterClick}
-                          title={topFont.family}
-                          thumbnail={{ url: topFont?.preview_url, alt: "Font" }}
-                        />
+                        <FormattedMessage
+                          id="app.label.font"
+                          defaultMessage="Font"
+                        >
+                          {(fontLabel) => (
+                            <FormattedMessage
+                              id="app.label.fontSize"
+                              defaultMessage="Font Size"
+                            >
+                              {(fontSizeLabel) => (
+                                <HorizontalCard
+                                  ariaLabel={topFont.family}
+                                  description={
+                                    <Columns spacing="0.5u">
+                                      <Column width="containedContent">
+                                        <div
+                                          style={{
+                                            backgroundColor: topFontColor,
+                                          }}
+                                        >
+                                          {" "}
+                                          + " " +{" "}
+                                        </div>
+                                      </Column>
+                                      <Column>
+                                        <span style={{ fontSize: 13 }}>
+                                          {fontSizeLabel}: {topFontSize}
+                                        </span>
+                                      </Column>
+                                    </Columns>
+                                  }
+                                  onClick={onTopFontFilterClick}
+                                  title={topFont.family}
+                                  thumbnail={{
+                                    url: topFont?.preview_url,
+                                    alt: fontLabel,
+                                  }}
+                                />
+                              )}
+                            </FormattedMessage>
+                          )}
+                        </FormattedMessage>
                       ) : null}
                     </Column>
                   </Columns>
@@ -701,7 +846,7 @@ export const App = () => {
             </Box>
           </Flyout>
 
-          <Box paddingStart="0.5u" paddingEnd="2u">
+          <Box paddingStart="0.5u" paddingEnd="2u" paddingBottom="4u">
             <Columns spacing="1u">
               <Column>
                 <Text variant="bold">
@@ -714,27 +859,58 @@ export const App = () => {
                   footer={<CharacterCountDecorator max={50} />}
                   onChange={(e) => {
                     setBottomMessageText(e);
+                    setPreviewOutOfDate(true);
                   }}
-                  onBlur={(e) => {
-                    updatePreviewQRCode();
-                  }}
-                  placeholder="Top Message"
+                  placeholder="Bottom Message"
                   value={bottomMessageText}
+                  maxRows={1}
                 />
                 <Box paddingEnd="0.5u">
                   <Columns spacing="0.5u">
                     <Column>
                       {bottomFont?.family ? (
-                        <HorizontalCard
-                          ariaLabel={bottomFont.family}
-                          description={"Font Size: " + bottomFontSize + "  Color: " + bottomFontColor}
-                          onClick={onBottomFontFilterClick}
-                          title={bottomFont.family}
-                          thumbnail={{
-                            url: bottomFont?.preview_url,
-                            alt: "Font",
-                          }}
-                        />
+                        <FormattedMessage
+                          id="app.label.font"
+                          defaultMessage="Font"
+                        >
+                          {(fontLabel) => (
+                            <FormattedMessage
+                              id="app.label.fontSize"
+                              defaultMessage="Font Size"
+                            >
+                              {(fontSizeLabel) => (
+                                <HorizontalCard
+                                  ariaLabel={bottomFont.family}
+                                  description={
+                                    <Columns spacing="0.5u">
+                                      <Column width="containedContent">
+                                        <div
+                                          style={{
+                                            backgroundColor: bottomFontColor,
+                                          }}
+                                        >
+                                          {" "}
+                                          + " " +{" "}
+                                        </div>
+                                      </Column>
+                                      <Column>
+                                        <span style={{ fontSize: 13 }}>
+                                          {fontSizeLabel}: {bottomFontSize}
+                                        </span>
+                                      </Column>
+                                    </Columns>
+                                  }
+                                  onClick={onBottomFontFilterClick}
+                                  title={bottomFont.family}
+                                  thumbnail={{
+                                    url: bottomFont?.preview_url,
+                                    alt: fontLabel,
+                                  }}
+                                />
+                              )}
+                            </FormattedMessage>
+                          )}
+                        </FormattedMessage>
                       ) : null}
                     </Column>
                   </Columns>
@@ -855,20 +1031,7 @@ export const App = () => {
             </Box>
           </Flyout>
 
-          <Box
-            paddingStart="1u"
-            paddingEnd="2u"
-            paddingTop="0.5u"
-            paddingBottom="6u"
-          >
-            <Columns spacing="1u">
-              <Column>
-                <Button variant="primary" onClick={handleCreateQRCode}>
-                  {createQRButtonLabel}
-                </Button>
-              </Column>
-            </Columns>
-          </Box>
+          
         </Grid>
       </form>
     </div>
