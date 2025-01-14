@@ -17,6 +17,8 @@ import {
   Columns,
   Column,
   Select,
+  Masonry,
+  MasonryItem,
   ArrowRightIcon,
   FontIcon,
   SlidersIcon,
@@ -131,7 +133,17 @@ export const App = () => {
 
   useEffect(() => {
     getBackgroundImages().then((data) => {
-      setBackgroundImages(data);
+      setBackgroundImages(
+        [{
+          id: "none",
+          type: "",
+          thumbnail_url: "https://kaards.com/images/backgrounds/noentry.jpg",
+          url: "https://kaards.com/images/backgrounds/noentry.jpg",
+          bg_color: "#ffffff",
+          fg_color: "#000000",
+        }
+        ,...data]
+      );
     });
   }, []);
 
@@ -228,7 +240,7 @@ export const App = () => {
     e.preventDefault();
 
     const requestData = {
-      source: "magikqr_app",
+      source: "magikcirql_app",
       platform: "canva",
       user_id: userToken,
       occasion: inviteType,
@@ -288,7 +300,8 @@ export const App = () => {
     setLoading(true);
 
     const requestData = {
-      source: "magikqr_app",
+      source: "magikcirql_app",
+      brand_name: "magik*cirql",
       platform: "canva",
       user_id: userToken,
       occasion: inviteType,
@@ -379,19 +392,24 @@ export const App = () => {
 
   return (
     <div className="app-container">
-      <h5>
-        <FormattedMessage
-          id="app.title"
-          defaultMessage="Creative QR-code stickers to add video messages to your invites and cards"
-        />
-      </h5>
-
+      
       <form>
         <Grid alignX="stretch" alignY="stretch" columns={1} spacing="1u">
           {loading ? (
-            <LoadingIndicator size="medium" />
+            <ImageCard
+              key="previewImageLoading"
+              thumbnailUrl="https://kaards.com/images/backgrounds/skeleton_circle.gif"
+              selectable={false}
+              alt="Preview"
+            />
           ) : previewOutOfDate ? (
             <Box paddingEnd="2u">
+              <ImageCard
+                key="previewImageLoading"
+                thumbnailUrl="https://kaards.com/images/backgrounds/skeleton_circle.png"
+                selectable={false}
+                alt="Preview"
+              />
               <FormattedMessage
                 id="app.label.refreshPreview"
                 defaultMessage="Refresh Preview"
@@ -417,13 +435,10 @@ export const App = () => {
               alt="Preview"
             />
           )}
+          
 
           {!loading && !previewOutOfDate ? (
-            <Box
-              paddingStart="1u"
-              paddingEnd="2u"
-              paddingTop="0.5u"
-            >
+            <Box paddingStart="1u" paddingEnd="2u" paddingTop="0.5u">
               <Columns spacing="1u">
                 <Column>
                   <Button
@@ -436,7 +451,7 @@ export const App = () => {
                 </Column>
               </Columns>
             </Box>
-          ) : null}          
+          ) : null}
 
           <Box paddingEnd="2u">
             <FormattedMessage
@@ -703,8 +718,7 @@ export const App = () => {
                                             backgroundColor: topFontColor,
                                           }}
                                         >
-                                          {" "}
-                                          + " " +{" "}
+                                         ___    
                                         </div>
                                       </Column>
                                       <Column>
@@ -820,25 +834,25 @@ export const App = () => {
                     />
                   </Text>
                   <Box paddingX="1u">
-                    <Grid
-                      alignX="stretch"
-                      alignY="stretch"
-                      columns={3}
-                      spacing="1u"
-                    >
-                      {fonts.map((font) => (
-                        <ImageCard
-                          key={font.family}
-                          thumbnailUrl={font.preview_url}
-                          onClick={() => handleTopFontChange(font.family)}
-                          alt={intl.formatMessage({
-                            id: "app.image.alt",
-                            defaultMessage: "Background",
-                          })}
-                          selected={topFont === font}
-                          selectable={true}
-                        />
-                      ))}
+                    <Grid columns={1} spacing="1u">
+                      <Masonry targetRowHeightPx={80}>
+                        {fonts.map((font) => (
+                          <MasonryItem key={font.family} targetHeightPx={80} targetWidthPx={200}>
+                            <ImageCard
+                              thumbnailUrl={font.preview_url}
+                              onClick={() => handleTopFontChange(font.family)}
+                              alt={intl.formatMessage({
+                                id: "app.image.alt",
+                                defaultMessage: "Background",
+                              })}
+                              selected={topFont === font}
+                              selectable={true}
+                              thumbnailHeight={40}
+                              thumbnailAspectRatio={5}
+                            />
+                          </MasonryItem>
+                        ))}
+                      </Masonry>
                     </Grid>
                   </Box>
                 </Rows>
@@ -889,8 +903,7 @@ export const App = () => {
                                             backgroundColor: bottomFontColor,
                                           }}
                                         >
-                                          {" "}
-                                          + " " +{" "}
+                                           ___
                                         </div>
                                       </Column>
                                       <Column>
@@ -1008,7 +1021,7 @@ export const App = () => {
                     <Grid
                       alignX="stretch"
                       alignY="stretch"
-                      columns={3}
+                      columns={1}
                       spacing="1u"
                     >
                       {fonts.map((font) => (
@@ -1030,8 +1043,6 @@ export const App = () => {
               </Rows>
             </Box>
           </Flyout>
-
-          
         </Grid>
       </form>
     </div>
