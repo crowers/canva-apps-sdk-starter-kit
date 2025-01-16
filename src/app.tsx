@@ -281,7 +281,7 @@ export const App = () => {
       font_size_bottom: bottomFontSize,
       message_top: topMessageText,
       message_bottom: bottomMessageText,
-      type: tabId === "linkToUrl" ? "url" : "moment",
+      service: tabId === "linkToUrl" ? "url" : "moment",
       target_url: tabId === "linkToUrl" ? targetUrl : null
     };
 
@@ -345,6 +345,7 @@ export const App = () => {
       message_top: topMessageText,
       message_bottom: bottomMessageText,
       demo: true,
+      service: tabId === "linkToUrl" ? "url" : "moment",
       format: "png",
     };
 
