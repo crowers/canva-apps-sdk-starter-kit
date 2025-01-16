@@ -24,6 +24,9 @@
     "app.label.foregroundColor": "Foreground",
     "app.label.uploadCustomImage": "Upload Custom Image",
     "app.label.backgroundImage": "Background Image",
+    "app.label.linkToUrl": "URL to link to:",
+    "app.tab.linkToUrl": "Link to URL",
+    "app.tab.videoMoment": "Video Moment",
     "app.image.alt": "Background",
     "app.button.resetColors": "Reset to default",
     "app.button.createQRCode": "Add to Page"

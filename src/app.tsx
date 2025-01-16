@@ -25,6 +25,14 @@ import {
   UndoIcon,
   Text,
   TextInput,
+  Tab,
+  TabList,
+  Tabs,
+  TabPanels,
+  TabPanel,
+  CogIcon,
+  PlayFilledIcon,
+  LinkIcon,
 } from "@canva/app-ui-kit";
 import { auth } from "@canva/user";
 import "../styles/components.css";
@@ -36,7 +44,11 @@ export const App = () => {
   const [inviteType, setInviteType] = useState<string>("party_invite");
   const [shape, setShape] = useState<string>("circle");
   const [backgroundColor, setBackgroundColor] = useState<string>("#ff6935");
+  const [currentBackgroundColor, setCurrentBackgroundColor] =
+    useState<string>("#ff6935");
   const [foregroundColor, setForegroundColor] = useState<string>("#ffffff");
+  const [currentForegroundColor, setCurrentForegroundColor] =
+    useState<string>("#ffffff");
   const [customImage, setCustomImage] = useState<File | null>(null);
   const [backgroundImages, setBackgroundImages] = useState<any[]>([]);
   const [fonts, setFonts] = useState<any[]>([]);
@@ -67,6 +79,9 @@ export const App = () => {
   );
   const [isBottomFontFilterMenuOpen, setIsBottomFontFilterMenuOpen] =
     useState(false);
+
+  const [tabId, setSelectedTabId] = useState<string>("linkToUrl");
+  const [targetUrl, setTargetUrl] = useState<string>("https://magikcirql.com");
 
   const handleTopFontChange = (event) => {
     const font = fonts.find((f) => f.family === event);
@@ -133,17 +148,17 @@ export const App = () => {
 
   useEffect(() => {
     getBackgroundImages().then((data) => {
-      setBackgroundImages(
-        [{
+      setBackgroundImages([
+        {
           id: "none",
           type: "",
           thumbnail_url: "https://kaards.com/images/backgrounds/noentry.jpg",
           url: "https://kaards.com/images/backgrounds/noentry.jpg",
           bg_color: "#ffffff",
           fg_color: "#000000",
-        }
-        ,...data]
-      );
+        },
+        ...data,
+      ]);
     });
   }, []);
 
@@ -211,19 +226,27 @@ export const App = () => {
     updatePreviewQRCode();
   };
 
-  const handleBackgroundColorChange = (value: string) => {
-    setBackgroundColor(value);
+  const handleBackgroundColorSelected = (value: string) => {
+    setCurrentBackgroundColor(value);
+    setBackgroundColor(currentBackgroundColor);
+  };
+
+  const colorPickerClosed = () => {
     setPreviewOutOfDate(true);
   };
 
-  const handleForegroundColorChange = (value: string) => {
-    setForegroundColor(value);
-    setPreviewOutOfDate(true);
+  const handleForegroundColorSelected = (value: string) => {
+    setCurrentForegroundColor(value);
+    setForegroundColor(currentForegroundColor);
   };
 
   const blobToImageURL = (blob: Blob) => {
     return URL.createObjectURL(blob);
   };
+
+  const handleTabSelect = (tabIdIn: string) => {
+    setSelectedTabId(tabIdIn);
+  }
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e?.target?.files?.[0] ?? e;
@@ -241,6 +264,7 @@ export const App = () => {
 
     const requestData = {
       source: "magikcirql_app",
+      brand_name: "magik*cirql",
       platform: "canva",
       user_id: userToken,
       occasion: inviteType,
@@ -257,6 +281,8 @@ export const App = () => {
       font_size_bottom: bottomFontSize,
       message_top: topMessageText,
       message_bottom: bottomMessageText,
+      type: tabId === "linkToUrl" ? "url" : "moment",
+      target_url: tabId === "linkToUrl" ? targetUrl : null
     };
 
     try {
@@ -386,13 +412,14 @@ export const App = () => {
 
   const handleBackgroundSelect = (image: any) => {
     setBackgroundImageId(image.id);
-    setBackgroundColor(image.bg_color);
-    setForegroundColor(image.fg_color);
+    if (image.id !== "none") {
+      setBackgroundColor(image.bg_color);
+      setForegroundColor(image.fg_color);
+    }
   };
 
   return (
     <div className="app-container">
-      
       <form>
         <Grid alignX="stretch" alignY="stretch" columns={1} spacing="1u">
           {loading ? (
@@ -435,10 +462,14 @@ export const App = () => {
               alt="Preview"
             />
           )}
-          
 
           {!loading && !previewOutOfDate ? (
-            <Box paddingStart="1u" paddingEnd="2u" paddingTop="0.5u">
+            <Box
+              paddingStart="1u"
+              paddingEnd="2u"
+              paddingTop="0.5u"
+              paddingBottom="2u"
+            >
               <Columns spacing="1u">
                 <Column>
                   <Button
@@ -452,30 +483,81 @@ export const App = () => {
               </Columns>
             </Box>
           ) : null}
+        </Grid>
 
-          <Box paddingEnd="2u">
-            <FormattedMessage
-              id="app.label.backgroundImage"
-              defaultMessage="Background Image"
+        <Tabs defaultActiveId="linkToUrl" onSelect={handleTabSelect}>
+          <TabList>
+            <Tab id="linkToUrl" layout="horizontal" start={<LinkIcon />}>
+              <FormattedMessage
+                id="app.tab.linkToUrl"
+                defaultMessage="Link to URL"
+              />
+            </Tab>
+            <Tab
+              id="videoMoment"
+              layout="horizontal"
+              start={<PlayFilledIcon />}
             >
-              {(localizedTitle) => (
-                <HorizontalCard
-                  ariaLabel={selectedBackgroundId}
-                  onClick={onFilterClick}
-                  title={
-                    <span style={{ fontSize: 14, fontWeight: "bold" }}>
-                      {localizedTitle}
-                    </span>
-                  }
-                  thumbnail={{
-                    url: backgroundImages.find(
-                      (bg) => bg.id === selectedBackgroundId
-                    )?.thumbnail_url,
-                    alt: localizedTitle,
-                  }}
-                />
-              )}
-            </FormattedMessage>
+              <FormattedMessage
+                id="app.tab.videoMoment"
+                defaultMessage="Video Moment"
+              />
+            </Tab>
+          </TabList>
+
+          <TabPanels>
+            <TabPanel id="linkToUrl">
+              <Box paddingStart="0.5u" paddingEnd="2u" paddingTop="2u">
+                <Columns spacing="1u">
+                  <Column>
+                    <Text variant="bold">
+                      <FormattedMessage
+                        id="app.label.linkToUrl"
+                        defaultMessage="URL to link to:"
+                      />
+                    </Text>
+                    <TextInput
+                      onChange={(e) => {
+                        setTargetUrl(e);
+                      }}
+                      placeholder="URL"
+                      type="url"
+                      value={targetUrl}
+                    />
+                  </Column>
+                </Columns>
+              </Box>
+            </TabPanel>
+            <TabPanel id="videoMoment"> </TabPanel>
+          </TabPanels>
+        </Tabs>
+
+        <Grid alignX="stretch" alignY="stretch" columns={1} spacing="1u">
+          <Box paddingEnd="2u" paddingTop="4u">
+            {selectedBackgroundId != null ? (
+              <FormattedMessage
+                id="app.label.backgroundImage"
+                defaultMessage="Background Image"
+              >
+                {(localizedTitle) => (
+                  <HorizontalCard
+                    ariaLabel={selectedBackgroundId}
+                    onClick={onFilterClick}
+                    title={
+                      <span style={{ fontSize: 14, fontWeight: "bold" }}>
+                        {localizedTitle}
+                      </span>
+                    }
+                    thumbnail={{
+                      url: backgroundImages.find(
+                        (bg) => bg.id === selectedBackgroundId
+                      )?.thumbnail_url,
+                      alt: localizedTitle,
+                    }}
+                  />
+                )}
+              </FormattedMessage>
+            ) : null}
           </Box>
 
           <Flyout
@@ -646,14 +728,16 @@ export const App = () => {
                   <ColorSelector
                     id="bgColorSelector"
                     color={backgroundColor}
-                    onChange={handleBackgroundColorChange}
+                    onChange={handleBackgroundColorSelected}
+                    onClose={colorPickerClosed}
                   />
                 </Column>
                 <Column>
                   <ColorSelector
                     id="fgColorSelector"
                     color={foregroundColor}
-                    onChange={handleForegroundColorChange}
+                    onChange={handleForegroundColorSelected}
+                    onClose={colorPickerClosed}
                   />
                 </Column>
               </Columns>
@@ -718,7 +802,7 @@ export const App = () => {
                                             backgroundColor: topFontColor,
                                           }}
                                         >
-                                         ___    
+                                          ___
                                         </div>
                                       </Column>
                                       <Column>
@@ -837,7 +921,11 @@ export const App = () => {
                     <Grid columns={1} spacing="1u">
                       <Masonry targetRowHeightPx={80}>
                         {fonts.map((font) => (
-                          <MasonryItem key={font.family} targetHeightPx={80} targetWidthPx={200}>
+                          <MasonryItem
+                            key={font.family}
+                            targetHeightPx={80}
+                            targetWidthPx={200}
+                          >
                             <ImageCard
                               thumbnailUrl={font.preview_url}
                               onClick={() => handleTopFontChange(font.family)}
@@ -903,7 +991,7 @@ export const App = () => {
                                             backgroundColor: bottomFontColor,
                                           }}
                                         >
-                                           ___
+                                          ___
                                         </div>
                                       </Column>
                                       <Column>
