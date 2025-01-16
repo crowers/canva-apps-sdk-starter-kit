@@ -264,7 +264,7 @@ export const App = () => {
 
     const requestData = {
       source: "magikcirql_app",
-      brand_name: "magik*cirql",
+      brand_name: tabId === "videoMoment" ? "magik*moment" : "magik*cirql",
       platform: "canva",
       user_id: userToken,
       occasion: inviteType,
