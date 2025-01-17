@@ -26,8 +26,10 @@
     "app.label.backgroundImage": "Background Image",
     "app.label.linkToUrl": "URL to link to:",
     "app.tab.linkToUrl": "Link to URL",
-    "app.tab.videoMoment": "Video Moment",
+    "app.tab.videoMoment": "Upload Video",
     "app.image.alt": "Background",
     "app.button.resetColors": "Reset to default",
-    "app.button.createQRCode": "Add to Page"
+    "app.button.createQRCode": "Add to Page",
+    "app.alert.configureVideo": "Scan the QR Code just added to setup your video",
+    "app.message.configureVideo": "To upload a video, configure your design first then Add to Page. Scan the QR Code added to your page to upload your video."
   }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
 import {
+  Alert,
   Box,
   Button,
   ColorSelector,
@@ -57,8 +58,9 @@ export const App = () => {
   const [previewImageSrc, setPreviewImageSrc] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const abortControllerRef = useRef<AbortController | null>(null);
-  const [previewOutOfDate = true, setPreviewOutOfDate] =
-    useState<boolean>(false);
+  const [previewOutOfDate, setPreviewOutOfDate] = useState<boolean>(false);
+  const [addingQrCode, setAddingQrCode] = useState<boolean>(false);
+  const [showVideoAlert, setShowVideoAlert] = useState<boolean>(false);
 
   const [triggerReferenceElement] = useState<HTMLDivElement | null>(null);
   const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
@@ -246,7 +248,7 @@ export const App = () => {
 
   const handleTabSelect = (tabIdIn: string) => {
     setSelectedTabId(tabIdIn);
-  }
+  };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e?.target?.files?.[0] ?? e;
@@ -262,9 +264,11 @@ export const App = () => {
   const handleCreateQRCode = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    setAddingQrCode(true);
+
     const requestData = {
       source: "magikcirql_app",
-      brand_name: tabId === "videoMoment" ? "magik*moment" : "magik*cirql",
+      brand_name: tabId === "video" ? "magik*moment" : "magik*cirql",
       platform: "canva",
       user_id: userToken,
       occasion: inviteType,
@@ -281,8 +285,8 @@ export const App = () => {
       font_size_bottom: bottomFontSize,
       message_top: topMessageText,
       message_bottom: bottomMessageText,
-      service: tabId === "linkToUrl" ? "url" : "moment",
-      target_url: tabId === "linkToUrl" ? targetUrl : null
+      service: tabId === "linkToUrl" ? "url" : "video",
+      target_url: tabId === "linkToUrl" ? targetUrl : null,
     };
 
     try {
@@ -312,8 +316,16 @@ export const App = () => {
         });
 
         await addElementAtPoint({ type: "image", ref: result.ref });
+
+        setAddingQrCode(false);
+
+        if (tabId === "video") {
+          setShowVideoAlert(true);
+        }
       }
-    } catch {}
+    } catch {
+      setAddingQrCode(false);
+    }
   };
 
   const updatePreviewQRCode = async () => {
@@ -473,13 +485,19 @@ export const App = () => {
             >
               <Columns spacing="1u">
                 <Column>
-                  <Button
-                    variant="primary"
-                    onClick={handleCreateQRCode}
-                    stretch
-                  >
-                    {createQRButtonLabel}
-                  </Button>
+                  {!addingQrCode ? (
+                    <Button
+                      variant="primary"
+                      onClick={handleCreateQRCode}
+                      stretch
+                    >
+                      {createQRButtonLabel}
+                    </Button>
+                  ) : (
+                    <Button variant="contrast" loading disabled stretch>
+                      {createQRButtonLabel}
+                    </Button>
+                  )}
                 </Column>
               </Columns>
             </Box>
@@ -494,14 +512,10 @@ export const App = () => {
                 defaultMessage="Link to URL"
               />
             </Tab>
-            <Tab
-              id="videoMoment"
-              layout="horizontal"
-              start={<PlayFilledIcon />}
-            >
+            <Tab id="video" layout="horizontal" start={<PlayFilledIcon />}>
               <FormattedMessage
-                id="app.tab.videoMoment"
-                defaultMessage="Video Moment"
+                id="app.tab.video"
+                defaultMessage="Upload Video"
               />
             </Tab>
           </TabList>
@@ -529,12 +543,35 @@ export const App = () => {
                 </Columns>
               </Box>
             </TabPanel>
-            <TabPanel id="videoMoment"> </TabPanel>
+            <TabPanel id="video">
+              <Box paddingTop="2u" paddingEnd="0.5u">
+                {showVideoAlert ? (
+                  <Alert
+                    onDismiss={() => {
+                      setShowVideoAlert(false);
+                    }}
+                    tone="warn"
+                  >
+                    <FormattedMessage
+                      id="app.alert.configureVideo"
+                      defaultMessage="Scan the QR Code just added to setup your video"
+                    />
+                  </Alert>
+                ) : (
+                  <Text>
+                    <FormattedMessage
+                      id="app.message.configureVideo"
+                      defaultMessage="To upload a video, configure your design then use Add to Page"
+                    />
+                  </Text>
+                )}
+              </Box>
+            </TabPanel>
           </TabPanels>
         </Tabs>
 
         <Grid alignX="stretch" alignY="stretch" columns={1} spacing="1u">
-          <Box paddingEnd="2u" paddingTop="4u">
+          <Box paddingEnd="2u" paddingTop="3u">
             {selectedBackgroundId != null ? (
               <FormattedMessage
                 id="app.label.backgroundImage"
@@ -1107,25 +1144,30 @@ export const App = () => {
                     />
                   </Text>
                   <Box paddingX="1u">
-                    <Grid
-                      alignX="stretch"
-                      alignY="stretch"
-                      columns={1}
-                      spacing="1u"
-                    >
-                      {fonts.map((font) => (
-                        <ImageCard
-                          key={font.family}
-                          thumbnailUrl={font.preview_url}
-                          onClick={() => handleBottomFontChange(font.family)}
-                          alt={intl.formatMessage({
-                            id: "app.image.alt",
-                            defaultMessage: "Background",
-                          })}
-                          selected={topFont === font}
-                          selectable={true}
-                        />
-                      ))}
+                    <Grid columns={1} spacing="1u">
+                      <Masonry targetRowHeightPx={80}>
+                        {fonts.map((font) => (
+                          <MasonryItem
+                            key={font.family}
+                            targetHeightPx={80}
+                            targetWidthPx={200}
+                          >
+                            <ImageCard
+                              key={font.family}
+                              thumbnailUrl={font.preview_url}
+                              onClick={() => handleBottomFontChange(font.family)}
+                              alt={intl.formatMessage({
+                                id: "app.image.alt",
+                                defaultMessage: "Background",
+                              })}
+                              selected={topFont === font}
+                              selectable={true}
+                              thumbnailHeight={40}
+                              thumbnailAspectRatio={5}
+                            />
+                          </MasonryItem>
+                        ))}
+                      </Masonry>
                     </Grid>
                   </Box>
                 </Rows>
