@@ -70,7 +70,7 @@ export const App = () => {
   const [topFontColor, setTopFontColor] = useState<string>("#000000");
   const [topFontSize, setTopFontSize] = useState<number>(36);
   const [topMessageText, setTopMessageText] = useState<string>(
-    "YOU'VE GOT A MESSAGE! 🎉"
+    "FIND OUT MORE! 😀"
   );
   const [isTopFontFilterMenuOpen, setIsTopFontFilterMenuOpen] = useState(false);
   const [bottomFont, setBottomFont] = useState<any>(null);
