@@ -42,6 +42,7 @@ import { addElementAtPoint } from "@canva/design";
 
 export const App = () => {
   const intl = useIntl();
+  const locale = intl.locale;
   const [inviteType, setInviteType] = useState<string>("party_invite");
   const [shape, setShape] = useState<string>("circle");
   const [backgroundColor, setBackgroundColor] = useState<string>("#ff6935");
@@ -287,6 +288,7 @@ export const App = () => {
       message_bottom: bottomMessageText,
       service: tabId === "linkToUrl" ? "url" : "video",
       target_url: tabId === "linkToUrl" ? targetUrl : null,
+      locale
     };
 
     try {
@@ -359,6 +361,7 @@ export const App = () => {
       demo: true,
       service: tabId === "linkToUrl" ? "url" : "moment",
       format: "png",
+      locale
     };
 
     try {
