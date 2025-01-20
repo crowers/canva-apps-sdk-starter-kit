@@ -9,7 +9,6 @@ import {
   Flyout,
   Grid,
   ImageCard,
-  LoadingIndicator,
   Rows,
   NumberInput,
   MultilineInput,
@@ -20,9 +19,6 @@ import {
   Select,
   Masonry,
   MasonryItem,
-  ArrowRightIcon,
-  FontIcon,
-  SlidersIcon,
   UndoIcon,
   Text,
   TextInput,
@@ -31,13 +27,12 @@ import {
   Tabs,
   TabPanels,
   TabPanel,
-  CogIcon,
   PlayFilledIcon,
   LinkIcon,
 } from "@canva/app-ui-kit";
 import { auth } from "@canva/user";
 import "../styles/components.css";
-import { upload, requestFontSelection } from "@canva/asset";
+import { upload } from "@canva/asset";
 import { addElementAtPoint } from "@canva/design";
 
 export const App = () => {
@@ -55,7 +50,6 @@ export const App = () => {
   const [backgroundImages, setBackgroundImages] = useState<any[]>([]);
   const [fonts, setFonts] = useState<any[]>([]);
   const [userToken, setUserToken] = useState<string | null>(null);
-  const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [previewImageSrc, setPreviewImageSrc] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -66,13 +60,11 @@ export const App = () => {
   const [triggerReferenceElement] = useState<HTMLDivElement | null>(null);
   const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
   const [backgroundCollection, setBackgroundCollection] = useState<string>("");
-  const [fileType, setFileType] = useState("");
   const [topFont, setTopFont] = useState<any>(null);
   const [topFontColor, setTopFontColor] = useState<string>("#000000");
   const [topFontSize, setTopFontSize] = useState<number>(36);
-  const [topMessageText, setTopMessageText] = useState<string>(
-    "FIND OUT MORE! 😀"
-  );
+  const [topMessageText, setTopMessageText] =
+    useState<string>("FIND OUT MORE! 😀");
   const [isTopFontFilterMenuOpen, setIsTopFontFilterMenuOpen] = useState(false);
   const [bottomFont, setBottomFont] = useState<any>(null);
   const [bottomFontColor, setBottomFontColor] = useState<string>("#000000");
@@ -115,11 +107,6 @@ export const App = () => {
   const onBottomFontFilterClick = () => {
     // Toggle the menu
     setIsBottomFontFilterMenuOpen(!isBottomFontFilterMenuOpen);
-  };
-
-  const resetFilters = () => {
-    setBackgroundCollection("");
-    setFileType("");
   };
 
   const createQRButtonLabel = intl.formatMessage({
@@ -219,16 +206,6 @@ export const App = () => {
     return [];
   };
 
-  const handleInviteTypeChange = (value: string) => {
-    setInviteType(value);
-    updatePreviewQRCode();
-  };
-
-  const handleShapeChange = (value: string) => {
-    setShape(value);
-    updatePreviewQRCode();
-  };
-
   const handleBackgroundColorSelected = (value: string) => {
     setCurrentBackgroundColor(value);
     setBackgroundColor(currentBackgroundColor);
@@ -243,23 +220,8 @@ export const App = () => {
     setForegroundColor(currentForegroundColor);
   };
 
-  const blobToImageURL = (blob: Blob) => {
-    return URL.createObjectURL(blob);
-  };
-
   const handleTabSelect = (tabIdIn: string) => {
     setSelectedTabId(tabIdIn);
-  };
-
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e?.target?.files?.[0] ?? e;
-    if (file) {
-      const imageURL = blobToImageURL(file);
-      setImageSrc(imageURL);
-
-      // Optional: Revoke the object URL after setting it to avoid memory leaks
-      URL.revokeObjectURL(imageURL);
-    }
   };
 
   const handleCreateQRCode = async (e: React.FormEvent) => {
@@ -288,7 +250,7 @@ export const App = () => {
       message_bottom: bottomMessageText,
       service: tabId === "linkToUrl" ? "url" : "video",
       target_url: tabId === "linkToUrl" ? targetUrl : null,
-      locale
+      locale,
     };
 
     try {
@@ -311,14 +273,14 @@ export const App = () => {
 
         const result = await upload({
           type: "image",
-          // Handle error
           mimeType: "image/png",
           url: base64Data ? base64Data.toString() : "",
           thumbnailUrl: base64Data ? base64Data.toString() : "",
+          aiDisclosure: 'none',
         });
 
-        await addElementAtPoint({ type: "image", ref: result.ref });
-
+        await addElementAtPoint({ type: "image", ref: result.ref, altText: undefined });
+        setPreviewOutOfDate(true);
         setAddingQrCode(false);
 
         if (tabId === "video") {
@@ -361,7 +323,7 @@ export const App = () => {
       demo: true,
       service: tabId === "linkToUrl" ? "url" : "moment",
       format: "png",
-      locale
+      locale,
     };
 
     try {
@@ -460,12 +422,11 @@ export const App = () => {
                 {(localizedButton) => (
                   <Button
                     variant="contrast"
-                    icon={() => {}}
                     onClick={updatePreviewQRCode}
-                    size="large"
+                    size="medium"
                     stretch
                   >
-                    {localizedButton}
+                    {localizedButton as string}
                   </Button>
                 )}
               </FormattedMessage>
@@ -593,7 +554,7 @@ export const App = () => {
                       url: backgroundImages.find(
                         (bg) => bg.id === selectedBackgroundId
                       )?.thumbnail_url,
-                      alt: localizedTitle,
+                      alt: localizedTitle as string,
                     }}
                   />
                 )}
@@ -1158,7 +1119,9 @@ export const App = () => {
                             <ImageCard
                               key={font.family}
                               thumbnailUrl={font.preview_url}
-                              onClick={() => handleBottomFontChange(font.family)}
+                              onClick={() =>
+                                handleBottomFontChange(font.family)
+                              }
                               alt={intl.formatMessage({
                                 id: "app.image.alt",
                                 defaultMessage: "Background",
