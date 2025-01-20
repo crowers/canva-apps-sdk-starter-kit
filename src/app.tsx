@@ -123,6 +123,60 @@ export const App = () => {
     defaultMessage: "Reset Colors",
   });
 
+  const localizedBackgroundOptions = [
+    {
+      value: "",
+      label: intl.formatMessage({ id: "app.collectionOption.all" }), // All collections
+    },
+    {
+      value: "bauhaus",
+      label: intl.formatMessage({ id: "app.collectionOption.bauhaus" }), // Bauhaus
+    },
+    {
+      value: "blue",
+      label: intl.formatMessage({ id: "app.collectionOption.blue" }), // Blue
+    },
+    {
+      value: "christmas",
+      label: intl.formatMessage({ id: "app.collectionOption.christmas" }), // Christmas
+    },
+    {
+      value: "emoticons",
+      label: intl.formatMessage({ id: "app.collectionOption.emoticons" }), // Emoticons
+    },
+    {
+      value: "party",
+      label: intl.formatMessage({ id: "app.collectionOption.party" }), // Party
+    },
+    {
+      value: "pink",
+      label: intl.formatMessage({ id: "app.collectionOption.pink" }), // Pink
+    },
+    {
+      value: "rainbow",
+      label: intl.formatMessage({ id: "app.collectionOption.rainbow" }), // Rainbow
+    },
+    {
+      value: "random",
+      label: intl.formatMessage({ id: "app.collectionOption.random" }), // Random
+    },
+    {
+      value: "tartan",
+      label: intl.formatMessage({ id: "app.collectionOption.tartan" }), // Tartan
+    },
+    {
+      value: "voucher",
+      label: intl.formatMessage({ id: "app.collectionOption.voucher" }), // Voucher
+    },
+  ];
+  
+  // Sort options alphabetically by label, keeping "All collections" at the top
+  const sortedBackgroundOptions = [
+    localizedBackgroundOptions[0], // All collections
+    ...localizedBackgroundOptions.slice(1).sort((a, b) => a.label.localeCompare(b.label)),
+  ];
+  
+
   useEffect(() => {
     setDefaultMessages("linkToUrl");
 
@@ -648,54 +702,9 @@ export const App = () => {
                     control={(props) => (
                       <Select
                         {...props}
-                        options={[
-                          {
-                            value: "",
-                            label: "All collections",
-                          },
-                          {
-                            value: "christmas",
-                            label: "Christmas",
-                          },
-                          {
-                            value: "bauhaus",
-                            label: "Bauhaus",
-                          },
-                          {
-                            value: "emoticon",
-                            label: "Emoticons",
-                          },
-                          {
-                            value: "blue",
-                            label: "Blue",
-                          },
-                          {
-                            value: "party",
-                            label: "Party",
-                          },
-                          {
-                            value: "pink",
-                            label: "Pink",
-                          },
-                          {
-                            value: "rainbow",
-                            label: "Rainbow",
-                          },
-                          {
-                            value: "random",
-                            label: "Random",
-                          },
-                          {
-                            value: "tartan",
-                            label: "Tartan",
-                          },
-                          {
-                            value: "voucher",
-                            label: "Voucher",
-                          },
-                        ]}
+                        options={sortedBackgroundOptions}
                         onChange={(props) => setBackgroundCollection(props)}
-                        placeholder="All collections"
+                        placeholder={intl.formatMessage({ id: "app.collectionOption.all" })}
                         stretch
                       />
                     )}

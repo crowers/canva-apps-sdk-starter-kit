@@ -35,5 +35,16 @@
   "app.message.url.top": "자세히 알아보기! 😀",
   "app.message.video.top": "메시지가 있습니다! 🎉",
   "app.message.url.bottom": "📲 휴대폰 카메라로 스캔하세요",
-  "app.message.video.bottom": "🥳 휴대폰 카메라로 스캔하세요"
+  "app.message.video.bottom": "🥳 휴대폰 카메라로 스캔하세요",
+  "app.collectionOption.all": "모든 컬렉션",
+  "app.collectionOption.christmas": "크리스마스",
+  "app.collectionOption.bauhaus": "바우하우스",
+  "app.collectionOption.emoticons": "이모티콘",
+  "app.collectionOption.blue": "파랑",
+  "app.collectionOption.party": "파티",
+  "app.collectionOption.pink": "핑크",
+  "app.collectionOption.rainbow": "무지개",
+  "app.collectionOption.random": "랜덤",
+  "app.collectionOption.tartan": "타탄",
+  "app.collectionOption.voucher": "바우처"
 }

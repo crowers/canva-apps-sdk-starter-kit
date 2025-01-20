@@ -35,5 +35,16 @@
   "app.message.url.top": "¡DESCUBRE MÁS! 😀",
   "app.message.video.top": "¡TIENES UN MENSAJE! 🎉",
   "app.message.url.bottom": "📲 ESCANEA CON LA CÁMARA DE TU TELÉFONO",
-  "app.message.video.bottom": "🥳 ESCANEA CON LA CÁMARA DE TU TELÉFONO"
+  "app.message.video.bottom": "🥳 ESCANEA CON LA CÁMARA DE TU TELÉFONO",
+  "app.collectionOption.all": "Todas las colecciones",
+  "app.collectionOption.christmas": "Navidad",
+  "app.collectionOption.bauhaus": "Bauhaus",
+  "app.collectionOption.emoticons": "Emoticonos",
+  "app.collectionOption.blue": "Azul",
+  "app.collectionOption.party": "Fiesta",
+  "app.collectionOption.pink": "Rosa",
+  "app.collectionOption.rainbow": "Arcoíris",
+  "app.collectionOption.random": "Aleatorio",
+  "app.collectionOption.tartan": "Tartán",
+  "app.collectionOption.voucher": "Vale"
 }

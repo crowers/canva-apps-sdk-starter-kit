@@ -35,5 +35,16 @@
   "app.message.url.top": "DAHA FAZLASINI KEŞFET! 😀",
   "app.message.video.top": "BİR MESAJINIZ VAR! 🎉",
   "app.message.url.bottom": "📲 TELEFONUNUZUN KAMERASIYLA TARAMA YAPIN",
-  "app.message.video.bottom": "🥳 TELEFONUNUZUN KAMERASIYLA TARAMA YAPIN"
+  "app.message.video.bottom": "🥳 TELEFONUNUZUN KAMERASIYLA TARAMA YAPIN",
+  "app.collectionOption.all": "Tüm koleksiyonlar",
+  "app.collectionOption.christmas": "Noel",
+  "app.collectionOption.bauhaus": "Bauhaus",
+  "app.collectionOption.emoticons": "Emojiler",
+  "app.collectionOption.blue": "Mavi",
+  "app.collectionOption.party": "Parti",
+  "app.collectionOption.pink": "Pembe",
+  "app.collectionOption.rainbow": "Gökkuşağı",
+  "app.collectionOption.random": "Rastgele",
+  "app.collectionOption.tartan": "Tartan",
+  "app.collectionOption.voucher": "Kupon"
 }

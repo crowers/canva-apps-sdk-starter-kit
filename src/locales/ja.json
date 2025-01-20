@@ -35,5 +35,16 @@
   "app.message.url.top": "もっと見る！😀",
   "app.message.video.top": "メッセージがあります！🎉",
   "app.message.url.bottom": "📲 携帯のカメラでスキャンしてください",
-  "app.message.video.bottom": "🥳 携帯のカメラでスキャンしてください"
+  "app.message.video.bottom": "🥳 携帯のカメラでスキャンしてください",
+  "app.collectionOption.all": "すべてのコレクション",
+  "app.collectionOption.christmas": "クリスマス",
+  "app.collectionOption.bauhaus": "バウハウス",
+  "app.collectionOption.emoticons": "絵文字",
+  "app.collectionOption.blue": "青",
+  "app.collectionOption.party": "パーティー",
+  "app.collectionOption.pink": "ピンク",
+  "app.collectionOption.rainbow": "虹",
+  "app.collectionOption.random": "ランダム",
+  "app.collectionOption.tartan": "タータン",
+  "app.collectionOption.voucher": "バウチャー"
 }

@@ -35,5 +35,16 @@
   "app.message.url.top": "EN SAVOIR PLUS ! 😀",
   "app.message.video.top": "VOUS AVEZ UN MESSAGE ! 🎉",
   "app.message.url.bottom": "📲 SCANNEZ AVEC L'APPAREIL PHOTO DE VOTRE TÉLÉPHONE",
-  "app.message.video.bottom": "🥳 SCANNEZ AVEC L'APPAREIL PHOTO DE VOTRE TÉLÉPHONE"
+  "app.message.video.bottom": "🥳 SCANNEZ AVEC L'APPAREIL PHOTO DE VOTRE TÉLÉPHONE",
+  "app.collectionOption.all": "Toutes les collections",
+  "app.collectionOption.christmas": "Noël",
+  "app.collectionOption.bauhaus": "Bauhaus",
+  "app.collectionOption.emoticons": "Émoticônes",
+  "app.collectionOption.blue": "Bleu",
+  "app.collectionOption.party": "Fête",
+  "app.collectionOption.pink": "Rose",
+  "app.collectionOption.rainbow": "Arc-en-ciel",
+  "app.collectionOption.random": "Aléatoire",
+  "app.collectionOption.tartan": "Tartan",
+  "app.collectionOption.voucher": "Bon"
 }

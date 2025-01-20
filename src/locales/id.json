@@ -35,5 +35,16 @@
   "app.message.url.top": "TEMUKAN LEBIH LANJUT! 😀",
   "app.message.video.top": "ANDA MEMILIKI PESAN! 🎉",
   "app.message.url.bottom": "📲 PINDAI DENGAN KAMERA PONSEL ANDA",
-  "app.message.video.bottom": "🥳 PINDAI DENGAN KAMERA PONSEL ANDA"
+  "app.message.video.bottom": "🥳 PINDAI DENGAN KAMERA PONSEL ANDA",
+  "app.collectionOption.all": "Semua koleksi",
+  "app.collectionOption.christmas": "Natal",
+  "app.collectionOption.bauhaus": "Bauhaus",
+  "app.collectionOption.emoticons": "Emotikon",
+  "app.collectionOption.blue": "Biru",
+  "app.collectionOption.party": "Pesta",
+  "app.collectionOption.pink": "Merah Muda",
+  "app.collectionOption.rainbow": "Pelangi",
+  "app.collectionOption.random": "Acak",
+  "app.collectionOption.tartan": "Tartan",
+  "app.collectionOption.voucher": "Voucher"
 }
