@@ -37,6 +37,9 @@ import { addElementAtPoint } from "@canva/design";
 
 export const App = () => {
   const defaultFontFamily = "Basic";
+  const defaultBackgroundId = "flowers1";
+  const defaultBackgroundUrl = "https://kaards.com/images/backgrounds/flowers1.jpg";
+
   const intl = useIntl();
   const locale = intl.locale;
   const [inviteType, setInviteType] = useState<string>("party_invite");
@@ -135,7 +138,7 @@ export const App = () => {
   }, []);
 
   const [selectedBackgroundId, setBackgroundImageId] =
-    useState<string>("flowers1");
+    useState<string>(defaultBackgroundId);
 
   useEffect(() => {
     getBackgroundImages().then((data) => {
@@ -554,7 +557,7 @@ export const App = () => {
                     thumbnail={{
                       url: backgroundImages.find(
                         (bg) => bg.id === selectedBackgroundId
-                      )?.thumbnail_url,
+                      )?.thumbnail_url ?? defaultBackgroundUrl,
                       alt: localizedTitle as string,
                     }}
                   />
