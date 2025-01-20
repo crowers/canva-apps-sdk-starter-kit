@@ -36,6 +36,7 @@ import { upload } from "@canva/asset";
 import { addElementAtPoint } from "@canva/design";
 
 export const App = () => {
+  const defaultFontFamily = "Basic";
   const intl = useIntl();
   const locale = intl.locale;
   const [inviteType, setInviteType] = useState<string>("party_invite");
@@ -154,8 +155,8 @@ export const App = () => {
 
   useEffect(() => {
     getFonts().then((data) => {
-      setTopFont(data[0]);
-      setBottomFont(data[0]);
+      setTopFont(data.find((f) => f.family === defaultFontFamily));
+      setBottomFont(data.find((f) => f.family === defaultFontFamily));
       setFonts(data);
     });
   }, []);
