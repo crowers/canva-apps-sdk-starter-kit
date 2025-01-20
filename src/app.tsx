@@ -74,7 +74,7 @@ export const App = () => {
   const [bottomFontColor, setBottomFontColor] = useState<string>("#000000");
   const [bottomFontSize, setBottomFontSize] = useState<number>(26);
   const [bottomMessageText, setBottomMessageText] = useState<string>(
-    "🥳 SCAN WITH YOUR PHONE CAMERA"
+    "📲 SCAN WITH YOUR PHONE CAMERA"
   );
   const [isBottomFontFilterMenuOpen, setIsBottomFontFilterMenuOpen] =
     useState(false);
@@ -124,6 +124,8 @@ export const App = () => {
   });
 
   useEffect(() => {
+    setDefaultMessages("linkToUrl");
+
     const fetchToken = async () => {
       try {
         const token = await auth.getCanvaUserToken();
@@ -226,6 +228,32 @@ export const App = () => {
 
   const handleTabSelect = (tabIdIn: string) => {
     setSelectedTabId(tabIdIn);
+    setDefaultMessages(tabIdIn);
+  };
+
+  const setDefaultMessages =(tabId: string) => {
+    // If the top or bottom text has not been customised then update the text based on the tab picked
+    const messageUrlTop = intl.formatMessage({id: "app.message.url.top" });
+    const messageVideoTop = intl.formatMessage({id: "app.message.video.top" });
+    const messageUrlBottom = intl.formatMessage({id: "app.message.url.bottom" });
+    const messageVideoBottom = intl.formatMessage({id: "app.message.video.bottom" });
+    
+    const defaultTopMessage = intl.formatMessage({id: tabId === "linkToUrl" ? "app.message.url.top" : "app.message.video.top"});
+    const defaultBottomMessage = intl.formatMessage({id: tabId === "linkToUrl" ? "app.message.url.bottom" : "app.message.video.bottom"});
+
+    let updated = false;
+    if (topMessageText === messageUrlTop || topMessageText === messageVideoTop) {
+      setTopMessageText(defaultTopMessage);
+      updated = true;
+    }
+    if (bottomMessageText === messageUrlBottom || bottomMessageText === messageVideoBottom) {
+      setBottomMessageText(defaultBottomMessage);
+      updated = true;
+    }
+
+    if (updated) {
+      updatePreviewQRCode()
+    }
   };
 
   const handleCreateQRCode = async (e: React.FormEvent) => {
