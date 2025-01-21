@@ -1,0 +1,194 @@
+{
+  "app.title": {
+    "defaultMessage": "Creative QR code stickers",
+    "description": "Title of the app"
+  },
+  "app.label.whatsItFor": {
+    "defaultMessage": "What's it for?",
+    "description": "Label for selecting the purpose of the QR code"
+  },
+  "app.option.partyInvite": {
+    "defaultMessage": "Party Invite",
+    "description": "Option for party invite"
+  },
+  "app.option.weddingInvite": {
+    "defaultMessage": "Wedding Invite",
+    "description": "Option for wedding invite"
+  },
+  "app.option.greetingCard": {
+    "defaultMessage": "Greeting Card",
+    "description": "Option for greeting card"
+  },
+  "app.label.shape": {
+    "defaultMessage": "Shape",
+    "description": "Label for selecting shape options"
+  },
+  "app.option.circle": {
+    "defaultMessage": "Circle",
+    "description": "Option for circle shape"
+  },
+  "app.option.balloon": {
+    "defaultMessage": "Balloon",
+    "description": "Option for balloon shape"
+  },
+  "app.option.ring": {
+    "defaultMessage": "Ring",
+    "description": "Option for ring shape"
+  },
+  "app.option.heart": {
+    "defaultMessage": "Heart",
+    "description": "Option for heart shape"
+  },
+  "app.label.background": {
+    "defaultMessage": "Background",
+    "description": "Label for selecting background options"
+  },
+  "app.option.gold": {
+    "defaultMessage": "Gold",
+    "description": "Option for gold background"
+  },
+  "app.option.silver": {
+    "defaultMessage": "Silver",
+    "description": "Option for silver background"
+  },
+  "app.option.blue": {
+    "defaultMessage": "Blue",
+    "description": "Option for blue background"
+  },
+  "app.option.pink": {
+    "defaultMessage": "Pink",
+    "description": "Option for pink background"
+  },
+  "app.option.library": {
+    "defaultMessage": "Library",
+    "description": "Option for selecting from the library"
+  },
+  "app.option.custom": {
+    "defaultMessage": "Custom",
+    "description": "Option for custom background"
+  },
+  "app.label.refreshPreview": {
+    "defaultMessage": "Refresh Preview",
+    "description": "Label for refreshing the preview"
+  },
+  "app.label.qrCode": {
+    "defaultMessage": "QR Code",
+    "description": "Label for QR code section"
+  },
+  "app.label.fontSize": {
+    "defaultMessage": "Font Size",
+    "description": "Label for font size selection"
+  },
+  "app.label.font": {
+    "defaultMessage": "Font",
+    "description": "Label for font selection"
+  },
+  "app.label.backgroundColor": {
+    "defaultMessage": "Background",
+    "description": "Label for background color selection"
+  },
+  "app.label.foregroundColor": {
+    "defaultMessage": "Foreground",
+    "description": "Label for foreground color selection"
+  },
+  "app.label.uploadCustomImage": {
+    "defaultMessage": "Upload Custom Image",
+    "description": "Label for uploading custom images"
+  },
+  "app.label.backgroundImage": {
+    "defaultMessage": "Background Image",
+    "description": "Label for background image selection"
+  },
+  "app.label.linkToUrl": {
+    "defaultMessage": "URL to link to:",
+    "description": "Label for entering a URL to link to"
+  },
+  "app.tab.linkToUrl": {
+    "defaultMessage": "Link to URL",
+    "description": "Tab for linking to a URL"
+  },
+  "app.tab.videoMoment": {
+    "defaultMessage": "Upload Video",
+    "description": "Tab for uploading video"
+  },
+  "app.image.alt": {
+    "defaultMessage": "Background",
+    "description": "Alt text for background images"
+  },
+  "app.button.resetColors": {
+    "defaultMessage": "Reset to default",
+    "description": "Button for resetting colors to default"
+  },
+  "app.button.createQRCode": {
+    "defaultMessage": "Add to Page",
+    "description": "Button for adding the QR code to the page"
+  },
+  "app.alert.configureVideo": {
+    "defaultMessage": "Scan the QR Code just added to setup your video",
+    "description": "Alert message for video setup instructions"
+  },
+  "app.message.configureVideo": {
+    "defaultMessage": "To upload a video, configure your design first then Add to Page. Scan the QR Code added to your page to upload your video.",
+    "description": "Message providing instructions for video upload"
+  },
+  "app.message.url.top": {
+    "defaultMessage": "FIND OUT MORE! 😀",
+    "description": "Top message for URL QR codes"
+  },
+  "app.message.video.top": {
+    "defaultMessage": "YOU'VE GOT A MESSAGE! 🎉",
+    "description": "Top message for video QR codes"
+  },
+  "app.message.url.bottom": {
+    "defaultMessage": "📲 SCAN WITH YOUR PHONE CAMERA",
+    "description": "Bottom message for URL QR codes"
+  },
+  "app.message.video.bottom": {
+    "defaultMessage": "🥳 SCAN WITH YOUR PHONE CAMERA",
+    "description": "Bottom message for video QR codes"
+  },
+  "app.collectionOption.all": {
+    "defaultMessage": "All collections",
+    "description": "Option for displaying all collections"
+  },
+  "app.collectionOption.christmas": {
+    "defaultMessage": "Christmas",
+    "description": "Option for Christmas collection"
+  },
+  "app.collectionOption.bauhaus": {
+    "defaultMessage": "Bauhaus",
+    "description": "Option for Bauhaus collection"
+  },
+  "app.collectionOption.emoticons": {
+    "defaultMessage": "Emoticons",
+    "description": "Option for Emoticons collection"
+  },
+  "app.collectionOption.blue": {
+    "defaultMessage": "Blue",
+    "description": "Option for Blue collection"
+  },
+  "app.collectionOption.party": {
+    "defaultMessage": "Party",
+    "description": "Option for Party collection"
+  },
+  "app.collectionOption.pink": {
+    "defaultMessage": "Pink",
+    "description": "Option for Pink collection"
+  },
+  "app.collectionOption.rainbow": {
+    "defaultMessage": "Rainbow",
+    "description": "Option for Rainbow collection"
+  },
+  "app.collectionOption.random": {
+    "defaultMessage": "Random",
+    "description": "Option for Random collection"
+  },
+  "app.collectionOption.tartan": {
+    "defaultMessage": "Tartan",
+    "description": "Option for Tartan collection"
+  },
+  "app.collectionOption.voucher": {
+    "defaultMessage": "Voucher",
+    "description": "Option for Voucher collection"
+  }
+}

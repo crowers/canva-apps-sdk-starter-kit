@@ -23,6 +23,7 @@
   "license": "SEE LICENSE IN LICENSE.md",
   "private": true,
   "dependencies": {
+    "@canva/app-i18n-kit": "^1.0.2",
     "@canva/app-ui-kit": "^4.5.0",
     "@canva/asset": "^2.0.0",
     "@canva/design": "^2.2.1",
