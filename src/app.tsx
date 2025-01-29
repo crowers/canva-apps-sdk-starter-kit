@@ -512,10 +512,9 @@ export const App = () => {
                   <Button
                     variant="contrast"
                     onClick={updatePreviewQRCode}
-                    size="medium"
                     stretch
                   >
-                    {localizedButton as string}
+                    {String(localizedButton)}
                   </Button>
                 )}
               </FormattedMessage>
@@ -643,7 +642,7 @@ export const App = () => {
                       url: backgroundImages.find(
                         (bg) => bg.id === selectedBackgroundId
                       )?.thumbnail_url ?? defaultBackgroundUrl,
-                      alt: localizedTitle as string,
+                      alt: String(localizedTitle),
                     }}
                   />
                 )}
@@ -772,7 +771,6 @@ export const App = () => {
               <Columns spacing="0.5u">
                 <Column>
                   <ColorSelector
-                    id="bgColorSelector"
                     color={backgroundColor}
                     onChange={handleBackgroundColorSelected}
                     onClose={colorPickerClosed}
@@ -780,7 +778,6 @@ export const App = () => {
                 </Column>
                 <Column>
                   <ColorSelector
-                    id="fgColorSelector"
                     color={foregroundColor}
                     onChange={handleForegroundColorSelected}
                     onClose={colorPickerClosed}
@@ -862,7 +859,7 @@ export const App = () => {
                                   title={topFont.family}
                                   thumbnail={{
                                     url: topFont?.preview_url,
-                                    alt: fontLabel,
+                                    alt: String(fontLabel),
                                   }}
                                 />
                               )}
@@ -927,7 +924,6 @@ export const App = () => {
                 <Columns spacing="0.5u">
                   <Column>
                     <ColorSelector
-                      id="topFontColorSelector"
                       color={topFontColor}
                       onChange={handleTopFontColorChange}
                     />
@@ -1051,7 +1047,7 @@ export const App = () => {
                                   title={bottomFont.family}
                                   thumbnail={{
                                     url: bottomFont?.preview_url,
-                                    alt: fontLabel,
+                                    alt: String(fontLabel),
                                   }}
                                 />
                               )}
@@ -1116,7 +1112,6 @@ export const App = () => {
                 <Columns spacing="0.5u">
                   <Column>
                     <ColorSelector
-                      id="bottomFontColorSelector"
                       color={bottomFontColor}
                       onChange={handleBottomFontColorChange}
                     />
