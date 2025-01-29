@@ -42,15 +42,15 @@ export const App = () => {
 
   const intl = useIntl();
   const locale = intl.locale;
-  const [inviteType, setInviteType] = useState<string>("party_invite");
-  const [shape, setShape] = useState<string>("circle");
+  const [inviteType] = useState<string>("party_invite");
+  const [shape] = useState<string>("circle");
   const [backgroundColor, setBackgroundColor] = useState<string>("#ff6935");
   const [currentBackgroundColor, setCurrentBackgroundColor] =
     useState<string>("#ff6935");
   const [foregroundColor, setForegroundColor] = useState<string>("#ffffff");
   const [currentForegroundColor, setCurrentForegroundColor] =
     useState<string>("#ffffff");
-  const [customImage, setCustomImage] = useState<File | null>(null);
+  const [customImage] = useState<File | null>(null);
   const [backgroundImages, setBackgroundImages] = useState<any[]>([]);
   const [fonts, setFonts] = useState<any[]>([]);
   const [userToken, setUserToken] = useState<string | null>(null);
@@ -185,7 +185,7 @@ export const App = () => {
         const token = await auth.getCanvaUserToken();
         setUserToken(token);
         //console.log("User Token retrieved:", token); // Log the token (optional)
-      } catch (error) {
+      } catch {
         //console.error("Error retrieving Canva user token:", error);
       }
     };
