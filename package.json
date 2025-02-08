@@ -1,6 +1,6 @@
 {
-  "name": "magikly-qr",
-  "description": "A Canva App for Magikly QR Stickers.",
+  "name": "magikcirql",
+  "description": "A Canva App for MagikCirql QR Stickers.",
   "engines": {
     "node": "^18 || ^22.0.0",
     "npm": "^9 || ^10"
@@ -19,12 +19,12 @@
     "test:watch": "jest --no-cache --watch"
   },
   "keywords": [],
-  "author": "Kaards",
+  "author": "kaARds.com",
   "license": "SEE LICENSE IN LICENSE.md",
   "private": true,
   "dependencies": {
     "@canva/app-i18n-kit": "^1.0.2",
-    "@canva/app-ui-kit": "^4.5.0",
+    "@canva/app-ui-kit": "^4.7.1",
     "@canva/asset": "^2.0.0",
     "@canva/design": "^2.2.1",
     "@canva/error": "^2.0.0",
