@@ -3,6 +3,7 @@ const path = require("path");
 const TerserPlugin = require("terser-webpack-plugin");
 const { DefinePlugin, optimize } = require("webpack");
 const chalk = require("chalk");
+const { transform } = require("@formatjs/ts-transformer");
 
 /**
  *
@@ -70,6 +71,15 @@ function buildConfig({
               loader: "ts-loader",
               options: {
                 transpileOnly: true,
+                getCustomTransformers() {
+                  return {
+                    before: [
+                      transform({
+                        overrideIdFn: "[sha512:contenthash:base64:6]",
+                      }),
+                    ],
+                  };
+                },
               },
             },
           ],

@@ -6,9 +6,10 @@
     "npm": "^9 || ^10"
   },
   "scripts": {
-    "start": "ts-node ./scripts/start/start.ts",
-    "build": "webpack --config webpack.config.js --mode production",
+    "start": "sudo npm run extract && ts-node ./scripts/start/start.ts",
+    "build": "webpack --config webpack.config.js --mode production && sudo npm run extract",
     "clean": "sudo rm -rf node_modules package-lock.json && sudo rm -rf node_modules/ && sudo npm i",
+    "extract": "formatjs extract \"src/**/*{ts,tsx}\" --out-file dist/messages_en.json",
     "lint:types": "tsc",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -33,11 +34,13 @@
     "@canva/user": "^2.0.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "react-intl": "^6.8.4"
+    "react-intl": "^6.8.9"
   },
   "devDependencies": {
     "@eslint/eslintrc": "3.1.0",
     "@eslint/js": "9.9.0",
+    "@formatjs/cli": "^6.6.1",
+    "@formatjs/ts-transformer": "^3.13.32",
     "@ngrok/ngrok": "1.4.1",
     "@svgr/webpack": "8.1.0",
     "@testing-library/dom": "10.4.0",
@@ -63,7 +66,8 @@
     "cssnano": "7.0.5",
     "debug": "4.3.6",
     "dotenv": "16.4.5",
-    "eslint": "9.9.0",
+    "eslint": "^9.9.0",
+    "eslint-plugin-formatjs": "^5.2.14",
     "eslint-plugin-jest": "28.8.0",
     "eslint-plugin-react": "7.35.0",
     "exponential-backoff": "3.1.1",

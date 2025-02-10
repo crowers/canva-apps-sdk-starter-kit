@@ -115,6 +115,14 @@
     "defaultMessage": "Background",
     "description": "Alt text for background images"
   },
+  "app.button.cancel": {
+    "defaultMessage": "Apply",
+    "description": "Button for applying changes"
+  },
+  "app.button.apply": {
+    "defaultMessage": "Cancel",
+    "description": "Button for canceling changes"
+  },
   "app.button.resetColors": {
     "defaultMessage": "Reset to default",
     "description": "Button for resetting colors to default"

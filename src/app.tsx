@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useIntl, FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import {
   Alert,
   Box,
@@ -82,6 +82,9 @@ export const App = () => {
   const [tabId, setSelectedTabId] = useState<string>("linkToUrl");
   const [targetUrl, setTargetUrl] = useState<string>("https://magikcirql.com");
 
+  const [sortedBackgroundOptions, setSortedBackgroundOptions] = useState<BackgroundOption[]>([]);
+
+
   const handleTopFontChange = (event) => {
     const font = fonts.find((f) => f.family === event);
     setTopFont(font);
@@ -123,60 +126,80 @@ export const App = () => {
     defaultMessage: "Reset Colors",
   });
 
-  const localizedBackgroundOptions = [
-    {
-      value: "",
-      label: intl.formatMessage({ id: "app.collectionOption.all" }), // All collections
-    },
-    {
-      value: "bauhaus",
-      label: intl.formatMessage({ id: "app.collectionOption.bauhaus" }), // Bauhaus
-    },
-    {
-      value: "blue",
-      label: intl.formatMessage({ id: "app.collectionOption.blue" }), // Blue
-    },
-    {
-      value: "christmas",
-      label: intl.formatMessage({ id: "app.collectionOption.christmas" }), // Christmas
-    },
-    {
-      value: "emoticons",
-      label: intl.formatMessage({ id: "app.collectionOption.emoticons" }), // Emoticons
-    },
-    {
-      value: "party",
-      label: intl.formatMessage({ id: "app.collectionOption.party" }), // Party
-    },
-    {
-      value: "pink",
-      label: intl.formatMessage({ id: "app.collectionOption.pink" }), // Pink
-    },
-    {
-      value: "rainbow",
-      label: intl.formatMessage({ id: "app.collectionOption.rainbow" }), // Rainbow
-    },
-    {
-      value: "random",
-      label: intl.formatMessage({ id: "app.collectionOption.random" }), // Random
-    },
-    {
-      value: "tartan",
-      label: intl.formatMessage({ id: "app.collectionOption.tartan" }), // Tartan
-    },
-    {
-      value: "voucher",
-      label: intl.formatMessage({ id: "app.collectionOption.voucher" }), // Voucher
-    },
-  ];
-  
-  // Sort options alphabetically by label, keeping "All collections" at the top
-  const sortedBackgroundOptions = [
-    localizedBackgroundOptions[0], // All collections
-    ...localizedBackgroundOptions.slice(1).sort((a, b) => a.label.localeCompare(b.label)),
-  ];
-  
+  const applyButtonLabel = intl.formatMessage({
+    id: "app.button.apply",
+    defaultMessage: "Apply",
+  });
 
+  const cancelButtonLabel = intl.formatMessage({
+    id: "app.button.cancel",
+    defaultMessage: "Cancel",
+  });
+
+  type BackgroundOption = {
+    value: string;
+    label: string;
+  };
+
+  useEffect(() => {
+    const localOptions: BackgroundOption[] = [
+      {
+        value: "",
+        label: intl.formatMessage({ id: "app.collectionOption.all" }), // All collections
+      },
+      {
+        value: "bauhaus",
+        label: intl.formatMessage({ id: "app.collectionOption.bauhaus" }), // Bauhaus
+      },
+      {
+        value: "blue",
+        label: intl.formatMessage({ id: "app.collectionOption.blue" }), // Blue
+      },
+      {
+        value: "christmas",
+        label: intl.formatMessage({ id: "app.collectionOption.christmas" }), // Christmas
+      },
+      {
+        value: "emoticons",
+        label: intl.formatMessage({ id: "app.collectionOption.emoticons" }), // Emoticons
+      },
+      {
+        value: "party",
+        label: intl.formatMessage({ id: "app.collectionOption.party" }), // Party
+      },
+      {
+        value: "pink",
+        label: intl.formatMessage({ id: "app.collectionOption.pink" }), // Pink
+      },
+      {
+        value: "rainbow",
+        label: intl.formatMessage({ id: "app.collectionOption.rainbow" }), // Rainbow
+      },
+      {
+        value: "random",
+        label: intl.formatMessage({ id: "app.collectionOption.random" }), // Random
+      },
+      {
+        value: "tartan",
+        label: intl.formatMessage({ id: "app.collectionOption.tartan" }), // Tartan
+      },
+      {
+        value: "voucher",
+        label: intl.formatMessage({ id: "app.collectionOption.voucher" }), // Voucher
+      },
+    ];
+    
+    // Sort options alphabetically by label, keeping "All collections" at the top
+    const sorted = [
+      localOptions[0],
+      ...localOptions.slice(1).sort((a, b) => a.label.localeCompare(b.label)),
+    ];
+
+    console.log("Sorted Background Options:", sorted);
+  
+    setSortedBackgroundOptions(sorted);
+  }, [intl]);
+    
   useEffect(() => {
     setDefaultMessages("linkToUrl");
 
@@ -667,7 +690,7 @@ export const App = () => {
                       }}
                       stretch
                     >
-                      Cancel
+                      {cancelButtonLabel}
                     </Button>
                   </Column>
                   <Column>
@@ -679,7 +702,7 @@ export const App = () => {
                       }}
                       stretch
                     >
-                      Apply
+                      {applyButtonLabel}
                     </Button>
                   </Column>
                 </Columns>
@@ -703,7 +726,7 @@ export const App = () => {
                         {...props}
                         options={sortedBackgroundOptions}
                         onChange={(props) => setBackgroundCollection(props)}
-                        placeholder={intl.formatMessage({ id: "app.collectionOption.all" })}
+                        placeholder={intl.formatMessage({ id: "app.collectionOption.all", defaultMessage: "All collections" })}
                         stretch
                       />
                     )}
@@ -890,7 +913,7 @@ export const App = () => {
                       }}
                       stretch
                     >
-                      Cancel
+                      {cancelButtonLabel}
                     </Button>
                   </Column>
                   <Column>
@@ -902,7 +925,7 @@ export const App = () => {
                       }}
                       stretch
                     >
-                      Apply
+                      {applyButtonLabel}
                     </Button>
                   </Column>
                 </Columns>
@@ -932,23 +955,30 @@ export const App = () => {
 
                 <Columns spacing="0.5u">
                   <Column>
-                    <FormField
-                      label="Font Size"
-                      control={(props) => (
-                        <NumberInput
-                          defaultValue={36}
-                          value={topFontSize}
-                          hasSpinButtons={true}
-                          step={1}
-                          onChange={(e: number) => {
-                            if (e > 0) {
-                              setTopFontSize(e);
-                            }
-                            updatePreviewQRCode();
-                          }}
+                    <FormattedMessage
+                      id="app.label.fontSize"
+                      defaultMessage="Font Size"
+                    >
+                      {(fontSizeLabel) => (
+                        <FormField
+                          label={fontSizeLabel}
+                          control={(props) => (
+                            <NumberInput
+                              defaultValue={36}
+                              value={topFontSize}
+                              hasSpinButtons={true}
+                              step={1}
+                              onChange={(e: number) => {
+                                if (e > 0) {
+                                  setTopFontSize(e);
+                                }
+                                updatePreviewQRCode();
+                              }}
+                            />
+                          )}
                         />
                       )}
-                    />
+                    </FormattedMessage>
                   </Column>
                 </Columns>
 
@@ -1078,7 +1108,7 @@ export const App = () => {
                       }}
                       stretch
                     >
-                      Cancel
+                      {cancelButtonLabel}
                     </Button>
                   </Column>
                   <Column>
@@ -1090,7 +1120,7 @@ export const App = () => {
                       }}
                       stretch
                     >
-                      Apply
+                      {applyButtonLabel}
                     </Button>
                   </Column>
                 </Columns>
@@ -1120,22 +1150,29 @@ export const App = () => {
 
                 <Columns spacing="0.5u">
                   <Column>
-                    <FormField
-                      label="Font Size"
-                      control={(props) => (
-                        <NumberInput
-                          defaultValue={26}
-                          value={bottomFontSize}
-                          hasSpinButtons={true}
-                          step={1}
-                          onChange={(e: number) => {
-                            if (e > 0) {
-                              setBottomFontSize(e);
-                            }
-                          }}
+                    <FormattedMessage
+                      id="app.label.fontSize"
+                      defaultMessage="Font Size"
+                    >
+                      {(fontSizeLabel) => (
+                        <FormField
+                          label={fontSizeLabel}
+                          control={(props) => (
+                            <NumberInput
+                              defaultValue={26}
+                              value={bottomFontSize}
+                              hasSpinButtons={true}
+                              step={1}
+                              onChange={(e: number) => {
+                                if (e > 0) {
+                                  setBottomFontSize(e);
+                                }
+                              }}
+                            />
+                          )}
                         />
                       )}
-                    />
+                    </FormattedMessage>
                   </Column>
                 </Columns>
 
