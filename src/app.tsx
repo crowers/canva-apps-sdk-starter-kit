@@ -209,8 +209,16 @@ export const App = () => {
         {
           id: "none",
           type: "",
-          thumbnail_url: "https://kaards.com/images/backgrounds/noentry.jpg",
-          url: "https://kaards.com/images/backgrounds/noentry.jpg",
+          thumbnail_url: "https://kaards.com/images/backgrounds/drawing-mode-behind.png",
+          url: "https://kaards.com/images/backgrounds/drawing-mode-behind.png",
+          bg_color: "#ffffff",
+          fg_color: "#000000",
+        },
+        {
+          id: "transparent",
+          type: "",
+          thumbnail_url: "https://kaards.com/images/backgrounds/drawing-mode-inside.png",
+          url: "https://kaards.com/images/backgrounds/drawing-mode-inside.png",
           bg_color: "#ffffff",
           fg_color: "#000000",
         },
@@ -479,7 +487,7 @@ export const App = () => {
 
   const handleBackgroundSelect = (image: any) => {
     setBackgroundImageId(image.id);
-    if (image.id !== "none") {
+    if (image.id !== "none" && image.id !== "transparent") {
       setBackgroundColor(image.bg_color);
       setForegroundColor(image.fg_color);
     }
