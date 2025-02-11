@@ -32,6 +32,9 @@
     "@canva/experimental": "./sdk/experimental",
     "@canva/platform": "^2.0.0",
     "@canva/user": "^2.0.0",
+    "@emoji-mart/data": "^1.2.1",
+    "@emoji-mart/react": "^1.1.1",
+    "emoji-mart": "^5.6.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-intl": "^6.8.9"

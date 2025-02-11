@@ -19,6 +19,7 @@ import {
   Select,
   Masonry,
   MasonryItem,
+  PlusIcon,
   UndoIcon,
   Text,
   TextInput,
@@ -34,6 +35,8 @@ import { auth } from "@canva/user";
 import "../styles/components.css";
 import { upload } from "@canva/asset";
 import { addElementAtPoint } from "@canva/design";
+import data from '@emoji-mart/data'
+import Picker from '@emoji-mart/react'
 
 export const App = () => {
   const defaultFontFamily = "Basic";
@@ -78,7 +81,9 @@ export const App = () => {
   );
   const [isBottomFontFilterMenuOpen, setIsBottomFontFilterMenuOpen] =
     useState(false);
-
+  const [showTopEmojiPicker, setShowTopEmojiPicker] = useState(false);
+  const [showBottomEmojiPicker, setShowBottomEmojiPicker] = useState(false);
+  
   const [tabId, setSelectedTabId] = useState<string>("linkToUrl");
   const [targetUrl, setTargetUrl] = useState<string>("https://magikcirql.com");
 
@@ -480,6 +485,28 @@ export const App = () => {
     }
   };
 
+  const handleTopMessageChange = (e) => {
+    setTopMessageText(e);
+    setPreviewOutOfDate(true);
+  };
+
+  const handleBottomMessageChange = (e) => {
+    setBottomMessageText(e);
+    setPreviewOutOfDate(true);
+  };
+
+  const addEmojiToTop = (emoji) => {
+    setTopMessageText(topMessageText + emoji.native);
+    setPreviewOutOfDate(true);
+    setShowTopEmojiPicker(false); // Close the picker after selection
+  };
+
+  const addEmojiToBottom = (emoji) => {
+    setBottomMessageText(bottomMessageText + emoji.native);
+    setPreviewOutOfDate(true);
+    setShowBottomEmojiPicker(false); // Close the picker
+  };  
+
   return (
     <div className="app-container">
       <form>
@@ -808,14 +835,27 @@ export const App = () => {
                 </Text>
                 <MultilineInput
                   footer={<CharacterCountDecorator max={50} />}
-                  onChange={(e) => {
-                    setTopMessageText(e);
-                    setPreviewOutOfDate(true);
-                  }}
+                  onChange={handleTopMessageChange}
                   placeholder="Top Message"
                   value={topMessageText}
                   maxRows={1}
                 />
+                <Button 
+                  ariaLabel="ariaLabel"
+                  variant="tertiary"
+                  type="button"
+                  size="small"
+                  icon={PlusIcon}
+                  onClick={() => setShowTopEmojiPicker(!showTopEmojiPicker)} 
+                />
+                {showTopEmojiPicker && (
+                    <Picker
+                      data={data} 
+                      locale={locale}
+                      style={{ position: 'absolute', zIndex: 1000 }}
+                      onEmojiSelect={addEmojiToTop}
+                    />
+                  )}
                 <Box paddingEnd="0.5u">
                   <Columns spacing="0.5u">
                     <Column>
@@ -1003,14 +1043,27 @@ export const App = () => {
                 </Text>
                 <MultilineInput
                   footer={<CharacterCountDecorator max={50} />}
-                  onChange={(e) => {
-                    setBottomMessageText(e);
-                    setPreviewOutOfDate(true);
-                  }}
+                  onChange={handleBottomMessageChange}
                   placeholder="Bottom Message"
                   value={bottomMessageText}
                   maxRows={1}
                 />
+                <Button 
+                  ariaLabel="ariaLabel"
+                  variant="tertiary"
+                  type="button"
+                  size="small"
+                  icon={PlusIcon}
+                  onClick={() => setShowBottomEmojiPicker(!showBottomEmojiPicker)}
+                />
+                {showBottomEmojiPicker && (
+                    <Picker 
+                      data={data} 
+                      locale={locale}
+                      style={{ position: 'absolute', zIndex: 1000 }}
+                      onEmojiSelect={addEmojiToBottom} 
+                    />
+                  )}
                 <Box paddingEnd="0.5u">
                   <Columns spacing="0.5u">
                     <Column>
