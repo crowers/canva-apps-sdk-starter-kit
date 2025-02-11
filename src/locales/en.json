@@ -167,7 +167,7 @@
     "defaultMessage": "Bauhaus",
     "description": "Option for Bauhaus collection"
   },
-  "app.collectionOption.emoticons": {
+  "app.collectionOption.emoticon": {
     "defaultMessage": "Emoticons",
     "description": "Option for Emoticons collection"
   },

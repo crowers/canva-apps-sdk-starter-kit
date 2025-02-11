@@ -82,9 +82,8 @@ export const App = () => {
   const [tabId, setSelectedTabId] = useState<string>("linkToUrl");
   const [targetUrl, setTargetUrl] = useState<string>("https://magikcirql.com");
 
-  const [sortedBackgroundOptions, setSortedBackgroundOptions] = useState<BackgroundOption[]>([]);
-
-
+  const [backgroundCollectionOptions, setBackgroundCollectionOptions] = useState<BackgroundOption[]>([]);
+  
   const handleTopFontChange = (event) => {
     const font = fonts.find((f) => f.family === event);
     setTopFont(font);
@@ -142,63 +141,36 @@ export const App = () => {
   };
 
   useEffect(() => {
-    const localOptions: BackgroundOption[] = [
-      {
-        value: "",
-        label: intl.formatMessage({ id: "app.collectionOption.all" }), // All collections
-      },
-      {
-        value: "bauhaus",
-        label: intl.formatMessage({ id: "app.collectionOption.bauhaus" }), // Bauhaus
-      },
-      {
-        value: "blue",
-        label: intl.formatMessage({ id: "app.collectionOption.blue" }), // Blue
-      },
-      {
-        value: "christmas",
-        label: intl.formatMessage({ id: "app.collectionOption.christmas" }), // Christmas
-      },
-      {
-        value: "emoticons",
-        label: intl.formatMessage({ id: "app.collectionOption.emoticons" }), // Emoticons
-      },
-      {
-        value: "party",
-        label: intl.formatMessage({ id: "app.collectionOption.party" }), // Party
-      },
-      {
-        value: "pink",
-        label: intl.formatMessage({ id: "app.collectionOption.pink" }), // Pink
-      },
-      {
-        value: "rainbow",
-        label: intl.formatMessage({ id: "app.collectionOption.rainbow" }), // Rainbow
-      },
-      {
-        value: "random",
-        label: intl.formatMessage({ id: "app.collectionOption.random" }), // Random
-      },
-      {
-        value: "tartan",
-        label: intl.formatMessage({ id: "app.collectionOption.tartan" }), // Tartan
-      },
-      {
-        value: "voucher",
-        label: intl.formatMessage({ id: "app.collectionOption.voucher" }), // Voucher
-      },
-    ];
-    
-    // Sort options alphabetically by label, keeping "All collections" at the top
-    const sorted = [
-      localOptions[0],
-      ...localOptions.slice(1).sort((a, b) => a.label.localeCompare(b.label)),
-    ];
+    // This effect now ONLY sets up the options, after intl is available.
+    const generateOptions = (): BackgroundOption[] => {
+      const options: BackgroundOption[] = [
+        { value: "", label: intl.formatMessage({ id: "app.collectionOption.all", defaultMessage: "All collections" }) },
+        { value: "bauhaus", label: intl.formatMessage({ id: "app.collectionOption.bauhaus", defaultMessage: "Bauhaus" }) },
+        { value: "blue", label: intl.formatMessage({ id: "app.collectionOption.blue", defaultMessage: "Blue" }) },
+        { value: "christmas", label: intl.formatMessage({ id: "app.collectionOption.christmas", defaultMessage: "Christmas" }) },
+        { value: "emoticon", label: intl.formatMessage({ id: "app.collectionOption.emoticon", defaultMessage: "Emoticons" }) },
+        { value: "party", label: intl.formatMessage({ id: "app.collectionOption.party", defaultMessage: "Party" }) },
+        { value: "pink", label: intl.formatMessage({ id: "app.collectionOption.pink", defaultMessage: "Pink" }) },
+        { value: "rainbow", label: intl.formatMessage({ id: "app.collectionOption.rainbow", defaultMessage: "Rainbow" }) },
+        { value: "random", label: intl.formatMessage({ id: "app.collectionOption.random", defaultMessage: "Random" }) },
+        { value: "tartan", label: intl.formatMessage({ id: "app.collectionOption.tartan", defaultMessage: "Tartan" }) },
+        { value: "voucher", label: intl.formatMessage({ id: "app.collectionOption.voucher", defaultMessage: "Voucher" }) },
+      ];
 
-    console.log("Sorted Background Options:", sorted);
-  
-    setSortedBackgroundOptions(sorted);
-  }, [intl]);
+      // Sort options alphabetically by label, keeping "All collections" at the top
+      const sorted = [
+        options[0],
+        ...options.slice(1).sort((a, b) => a.label.localeCompare(b.label)),
+      ];
+      return sorted;
+    }
+
+    if (intl) { // Check if intl is available
+      const sortedOptions = generateOptions();
+      setBackgroundCollectionOptions(sortedOptions);
+    }
+
+  }, [intl]); // intl is a dependency
     
   useEffect(() => {
     setDefaultMessages("linkToUrl");
@@ -317,13 +289,13 @@ export const App = () => {
 
   const setDefaultMessages =(tabId: string) => {
     // If the top or bottom text has not been customised then update the text based on the tab picked
-    const messageUrlTop = intl.formatMessage({ id: "app.message.url.top" });
-    const messageVideoTop = intl.formatMessage({ id: "app.message.video.top" });
-    const messageUrlBottom = intl.formatMessage({ id: "app.message.url.bottom" });
-    const messageVideoBottom = intl.formatMessage({ id: "app.message.video.bottom" });
+    const messageUrlTop = intl.formatMessage({ id: "app.message.url.top", defaultMessage: 'FIND OUT MORE! 😀' });
+    const messageVideoTop = intl.formatMessage({ id: "app.message.video.top", defaultMessage: "YOU'VE GOT A MESSAGE! 🎉" });
+    const messageUrlBottom = intl.formatMessage({ id: "app.message.url.bottom", defaultMessage: '📲 SCAN WITH YOUR PHONE CAMERA' });
+    const messageVideoBottom = intl.formatMessage({ id: "app.message.video.bottom", defaultMessage: '🥳 SCAN WITH YOUR PHONE CAMERA' });
   
-    const defaultTopMessage = intl.formatMessage({ id: tabId === "linkToUrl" ? "app.message.url.top" : "app.message.video.top" });
-    const defaultBottomMessage = intl.formatMessage({ id: tabId === "linkToUrl" ? "app.message.url.bottom" : "app.message.video.bottom" });
+    const defaultTopMessage = tabId === "linkToUrl" ? messageUrlTop : messageVideoTop;
+    const defaultBottomMessage = tabId === "linkToUrl" ? messageUrlBottom : messageVideoBottom;
   
     const updatedTop = topMessageText === messageUrlTop || topMessageText === messageVideoTop;
     const updatedBottom = bottomMessageText === messageUrlBottom || bottomMessageText === messageVideoBottom;
@@ -392,7 +364,7 @@ export const App = () => {
         });
 
         await addElementAtPoint({ type: "image", ref: result.ref, altText: undefined });
-        setPreviewOutOfDate(true);
+        setPreviewOutOfDate(false);
         setAddingQrCode(false);
 
         if (tabId === "video") {
@@ -533,7 +505,7 @@ export const App = () => {
               >
                 {(localizedButton) => (
                   <Button
-                    variant="contrast"
+                    variant="primary"
                     onClick={updatePreviewQRCode}
                     stretch
                   >
@@ -724,7 +696,7 @@ export const App = () => {
                     control={(props) => (
                       <Select
                         {...props}
-                        options={sortedBackgroundOptions}
+                        options={backgroundCollectionOptions}
                         onChange={(props) => setBackgroundCollection(props)}
                         placeholder={intl.formatMessage({ id: "app.collectionOption.all", defaultMessage: "All collections" })}
                         stretch
@@ -989,7 +961,7 @@ export const App = () => {
                       defaultMessage="Font"
                     />
                   </Text>
-                  <Box paddingX="1u">
+                  <Box paddingX="1u" style={{ backgroundColor: "white" }}>
                     <Grid columns={1} spacing="1u">
                       <Masonry targetRowHeightPx={80}>
                         {fonts.map((font) => (
