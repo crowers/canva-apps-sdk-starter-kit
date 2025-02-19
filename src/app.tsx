@@ -139,6 +139,21 @@ export const App = () => {
     id: "app.button.cancel",
     defaultMessage: "Cancel",
   });
+  
+  const backgroundImageLabel = intl.formatMessage({
+    id: "app.label.backgroundImage",
+    defaultMessage: "Background Image",
+  });
+
+  const transparentBackgroundLabel = intl.formatMessage({
+    id: "app.label.transparentBackgroundImage",
+    defaultMessage: "Transparent Background",
+  });
+
+  const noBackgroundLabel = intl.formatMessage({
+    id: "app.label.noBackgroundImage",
+    defaultMessage: "No Background Image",
+  });
 
   type BackgroundOption = {
     value: string;
@@ -655,28 +670,21 @@ export const App = () => {
         <Grid alignX="stretch" alignY="stretch" columns={1} spacing="1u">
           <Box paddingEnd="2u" paddingTop="3u">
             {selectedBackgroundId != null ? (
-              <FormattedMessage
-                id="app.label.backgroundImage"
-                defaultMessage="Background Image"
-              >
-                {(localizedTitle) => (
-                  <HorizontalCard
-                    ariaLabel={selectedBackgroundId}
-                    onClick={onFilterClick}
-                    title={
-                      <span style={{ fontSize: 14, fontWeight: "bold" }}>
-                        {localizedTitle}
-                      </span>
-                    }
-                    thumbnail={{
-                      url: backgroundImages.find(
-                        (bg) => bg.id === selectedBackgroundId
-                      )?.thumbnail_url ?? defaultBackgroundUrl,
-                      alt: String(localizedTitle),
-                    }}
-                  />
-                )}
-              </FormattedMessage>
+                <HorizontalCard
+                  ariaLabel={selectedBackgroundId}
+                  onClick={onFilterClick}
+                  title={
+                    <span style={{ fontSize: 14, fontWeight: "bold" }}>
+                      {selectedBackgroundId != "none" && selectedBackgroundId != "transparent" ? backgroundImageLabel : (selectedBackgroundId == "none" ? noBackgroundLabel : transparentBackgroundLabel)}
+                    </span>
+                  }
+                  thumbnail={{
+                    url: backgroundImages.find(
+                      (bg) => bg.id === selectedBackgroundId
+                    )?.thumbnail_url ?? defaultBackgroundUrl,
+                    alt: String(backgroundImageLabel),
+                  }}
+                />
             ) : null}
           </Box>
 

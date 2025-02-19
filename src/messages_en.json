@@ -75,6 +75,14 @@
     "defaultMessage": "Background Image",
     "description": "Label for background image selection"
   },
+  "app.label.transparentBackgroundImage": {
+    "defaultMessage": "Transparent Background",
+    "description": "Label for transparent background selection"
+  },
+  "app.label.noBackgroundImage": {
+    "defaultMessage": "No Background Image",
+    "description": "Label for no background image selection"
+  },
   "app.label.bottomFont": {
     "defaultMessage": "Font",
     "description": "Label for font selection"
